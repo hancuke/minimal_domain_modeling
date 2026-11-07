@@ -123,3 +123,6 @@ test ! -e .claude/skills/minimal-domain-modeling &&
 - [mgechev/skills-best-practices](https://github.com/mgechev/skills-best-practices)
 
 正文保留英文以便跨工具使用；此文档面向中文维护者。仓库级说明与运行时材料分离，避免把人类安装文档混入 Skill。
+
+
+https://github.com/wonsukchoi/domain-experts/blob/main/roles/financial-analyst/
