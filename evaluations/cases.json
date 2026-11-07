@@ -1,0 +1,100 @@
+{
+  "discovery": [
+    {
+      "id": "new-business-model",
+      "prompt": "Model a lending business where members borrow copies of books. Identify the minimum concepts and their responsibilities before implementation.",
+      "should_trigger": true,
+      "reason": "Creates a domain model from business requirements."
+    },
+    {
+      "id": "existing-boundary-review",
+      "prompt": "Our approval model has Approval, ApprovalTask, ApprovalManager, and ApprovalSummary. Review which concepts need independent identity and lifecycle, and simplify the boundaries.",
+      "should_trigger": true,
+      "reason": "Reviews and reduces existing domain concepts."
+    },
+    {
+      "id": "unclear-requirements",
+      "prompt": "We need a refund feature, but full and partial refunds are mixed together in the requirements. Help clarify the business rules and propose a minimal domain model.",
+      "should_trigger": true,
+      "reason": "Clarifies requirements in order to build a model."
+    },
+    {
+      "id": "implementation-review",
+      "prompt": "Review this JavaScript helper for off-by-one errors. The business behavior and model are already approved and must not change.",
+      "should_trigger": false,
+      "reason": "Implementation-only review."
+    },
+    {
+      "id": "schema-only",
+      "prompt": "The domain model is fixed. Add a PostgreSQL index to speed up the approval_tasks query without changing business behavior.",
+      "should_trigger": false,
+      "reason": "Database optimization, not domain modeling."
+    },
+    {
+      "id": "ui-only",
+      "prompt": "Restyle the approval progress component with Tailwind. Keep its data contract and business logic unchanged.",
+      "should_trigger": false,
+      "reason": "UI-only work despite matching business vocabulary."
+    }
+  ],
+  "execution": [
+    {
+      "id": "blocking-approval-policy",
+      "prompt": "Design a minimal approval model. An application has several approvers, but we have not decided whether one approval or all approvals are required.",
+      "checks": [
+        "Asks about the completion policy before confirming related operations and transitions.",
+        "If no answer is available, labels alternatives or assumptions provisional.",
+        "Does not invent unanimous approval or any-one approval as a confirmed rule."
+      ]
+    },
+    {
+      "id": "historical-derived-result",
+      "prompt": "Model eligibility decisions. Each decision is calculated from income and a versioned policy. Policies change monthly; we must explain every issued decision exactly as it was made, even after restart.",
+      "checks": [
+        "Evaluates derived nature separately from the requirement to retain historical meaning.",
+        "Identifies preserved inputs, applicable policy version, or issued result as relevant to reconstruction.",
+        "Does not claim that recalculation with the current policy preserves historical decisions.",
+        "Does not invent a legal retention duration."
+      ]
+    },
+    {
+      "id": "task-independent-lifecycle",
+      "prompt": "Review a model where pending approval tasks are treated only as a calculated list. Each task can be assigned, claimed, transferred, and expire independently of the application.",
+      "checks": [
+        "Recognizes independent task facts and lifecycle rather than treating the task as only a view.",
+        "Revisits concept boundaries when those capabilities justify a distinction.",
+        "Does not equate independent identity with automatic persistence; explains the retention need."
+      ]
+    },
+    {
+      "id": "minimal-output",
+      "prompt": "Briefly model a user choosing exactly one of three notification preferences. A preference can be replaced and must survive restart. No history or additional behavior is required.",
+      "checks": [
+        "Uses a simple preference value or finite classification with only justified ownership.",
+        "Does not add services, events, independent lifecycles, or diagrams without a requirement.",
+        "States the retention reason and checks a valid choice plus rejection of an unsupported choice.",
+        "Keeps the answer compact instead of filling the full document template."
+      ]
+    },
+    {
+      "id": "scenario-drives-revision",
+      "prompt": "Model order cancellation. An order can be partially fulfilled. Only unfulfilled line quantities may be cancelled; fulfilled quantities cannot be cancelled. The cancelled quantities must remain recorded. Payment and refunds are out of scope.",
+      "checks": [
+        "Preserves quantity-level distinctions needed for partial cancellation.",
+        "Validates successful cancellation of unfulfilled quantities and rejection of cancelling fulfilled quantities.",
+        "Does not reduce the model to one order-level cancelled flag.",
+        "Does not invent payment or refund concepts."
+      ]
+    },
+    {
+      "id": "focused-review",
+      "prompt": "Our approved model retains task records and historical assignments. Review only whether task transfer belongs to the Task or the overall Approval. Do not change retention or other lifecycle rules. Task transfer changes the current assignee and records the old and new assignees; it leaves approval decisions unchanged.",
+      "checks": [
+        "Reviews the responsibility boundary and directly affected interactions.",
+        "Uses the supplied transfer behavior without inventing a new transfer policy.",
+        "Checks a transfer scenario and leaves existing retention requirements unchanged.",
+        "Does not rebuild every modeling stage or force a full report."
+      ]
+    }
+  ]
+}
