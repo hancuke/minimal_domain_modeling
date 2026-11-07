@@ -125,4 +125,11 @@ test ! -e .claude/skills/minimal-domain-modeling &&
 正文保留英文以便跨工具使用；此文档面向中文维护者。仓库级说明与运行时材料分离，避免把人类安装文档混入 Skill。
 
 
-https://github.com/wonsukchoi/domain-experts/blob/main/roles/financial-analyst/
+## reference
+- https://github.com/wonsukchoi/domain-experts/blob/main/roles/financial-analyst/
+- https://www.multicians.org/thvv/proverbs.html
+- https://www.thoughtworks.com/en-us/insights/blog/agile-project-management/domain-modeling-what-you-need-to-know-before-coding
+- https://www.cosmicpython.com/book/part1
+- https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html
+- https://mcpmarket.com/zh/tools/skills/rob-pike-code-philosophy
+- https://ubos.tech/news/rob-pikes-five-programming-rules-timeless-guidance-for-modern-developers/
