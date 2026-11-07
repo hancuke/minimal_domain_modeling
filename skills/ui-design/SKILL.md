@@ -1,6 +1,6 @@
 ---
-name: uidesign
-description: descript design steps for ui
+name: ui-design
+description: Design or improve interface hierarchy, layout, typography, and responsive composition around established user tasks and data. Use when creating a page or component, restyling an interface, or reviewing rendered UI. Preserve business behavior and data contracts; implement and inspect the rendered result when the task requests a working interface.
 ---
 # UI Design Brief
 

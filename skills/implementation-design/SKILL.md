@@ -1,6 +1,6 @@
 ---
-name: shape
-description: Design understandable, maintainable, and extensible software before implementation. Use when initializing project architecture, adding features, refactoring modules, or changing component boundaries.
+name: implementation-design
+description: Design technical modules, interfaces, dependencies, data flows, and failure handling from established requirements. Use when defining project architecture, planning a feature's implementation, or refactoring technical boundaries. Treat business rules and visual design as inputs; implement and verify when the task requests code changes.
 ---
 
 # Design Before Code

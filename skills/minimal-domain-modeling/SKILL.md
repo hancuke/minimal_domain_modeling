@@ -1,6 +1,6 @@
 ---
 name: minimal-domain-modeling
-description: Builds the simplest sufficient domain model from business requirements, or reviews and simplifies an existing model's concepts, responsibilities, rules, and lifecycles. Use when translating unclear business requirements into a model, defining business concept boundaries before implementation, or refactoring those boundaries. Not for implementation-only code review, algorithm optimization, infrastructure, database-schema-only, or UI design.
+description: Model or simplify business concepts, responsibilities, rules, relationships, lifecycles, and retention requirements. Use when translating business requirements into a domain model or reviewing existing business boundaries. Leaves technical architecture and UI design to separate tasks.
 ---
 
 # Minimal Domain Modeling

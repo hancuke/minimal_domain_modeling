@@ -2,6 +2,17 @@
 
 把业务需求转化为最简充分领域模型的可移植 Agent Skill。也适用于评估、简化已有模型的概念边界、职责和生命周期，不代替技术架构或实现设计。
 
+## Skills 与职责
+
+| Skill | 适用任务 | 职责边界 |
+|---|---|---|
+| `minimal-domain-modeling` | 从业务需求建立领域模型，或评估、简化已有业务边界 | 概念、职责、规则、关系、生命周期和信息保留要求；不负责技术架构或 UI 设计 |
+| `implementation-design` | 设计项目架构、规划功能实现，或重构技术边界 | 基于已确定的需求设计模块、接口、依赖、数据流和失败处理；将业务规则和视觉设计视为输入 |
+| `ui-design` | 创建页面或组件、调整界面样式，或评估实际渲染结果 | 基于用户任务和数据设计信息层级、布局、字体和响应式构图；保留业务行为和数据契约 |
+
+按任务选择所需 Skill，不要求每次依次运行三个。业务规则未明确时先澄清或建模；技术设计与 UI 设计使用已确定的业务行为作为输入。任务要求代码变更时，后两个 Skill 可继续实现和验证。
+ 
+
 ## 文件与安装边界
 
 ```text
@@ -14,9 +25,9 @@ minimal_domain_modeling/
 │   │   │   └── information-and-retention.md
 │   │   └── assets/
 │   │       └── model-template.md
-│   ├── shape/
+│   ├── implementation-design/
 │   │   └── SKILL.md
-│   └── uidesign/
+│   └── ui-design/
 │       └── SKILL.md
 └── evaluations/
     └── cases.json
@@ -49,7 +60,7 @@ npx skills add hancuke/minimal_domain_modeling \
   --global
 ```
 
-将 `--skill` 的值替换为 `shape` 或 `uidesign` 可安装其他 Skill。`npm install skills` 只安装 Skills CLI，不会安装本仓库的 Skill；无需将本仓库发布到 npm。
+将 `--skill` 的值替换为 `implementation-design` 或 `ui-design` 可安装其他 Skill。`npm install skills` 只安装 Skills CLI，不会安装本仓库的 Skill；无需将本仓库发布到 npm。
 
 GitHub 安装读取已推送的文件；私有仓库需要目标机器配置有访问权限的 Git 凭据。更新已有安装前先比较版本与本地修改，避免覆盖。
 
