@@ -5,31 +5,66 @@
 ## 文件与安装边界
 
 ```text
-minimal-domain-modeling/
-├── SKILL.md
-├── references/
-│   └── information-and-retention.md
-└── assets/
-    └── model-template.md
-evaluations/
-└── cases.json
-README.md
+minimal_domain_modeling/
+├── README.md
+├── skills/
+│   ├── minimal-domain-modeling/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   │   └── information-and-retention.md
+│   │   └── assets/
+│   │       └── model-template.md
+│   ├── shape/
+│   │   └── SKILL.md
+│   └── uidesign/
+│       └── SKILL.md
+└── evaluations/
+    └── cases.json
 ```
 
-只安装 `minimal-domain-modeling/` 整个目录。根目录的 README 和评估场景面向维护者，不属于运行时 Skill，也不需要加载到 Agent 上下文。
+`skills/` 下每个子目录是独立的 Skill，安装时复制所选 Skill 的整个目录，而不是整个仓库。根目录的 README 和评估场景面向维护者，不属于运行时 Skill，也不需要加载到 Agent 上下文。
 
-正文负责流程、澄清门槛和完成标准；保留要求的专项判断放在 reference 中；完整文档的展示结构放在 template 中。引用均相对 Skill 目录解析，不依赖此仓库的绝对路径、脚本、网络或其他 Skill。
+`minimal-domain-modeling` 正文负责流程、澄清门槛和完成标准；保留要求的专项判断放在 reference 中；完整文档的展示结构放在 template 中。引用均相对 Skill 目录解析，不依赖此仓库的绝对路径、脚本、网络或其他 Skill。
 
 ## 在另一台机器安装
 
-将本项目复制到目标机器，并在项目根目录执行以下命令。目标目录已存在时先比较差异，避免覆盖当地修改。
+### 从 GitHub 安装（推荐）
+
+目标机器需要 Node.js、npm 和 Git。在目标业务项目根目录执行：
+
+```sh
+# 查看仓库中可安装的 Skills，不执行安装
+npx skills add hancuke/minimal_domain_modeling --list
+
+# 安装领域建模 Skill，交互选择目标 Agent
+npx skills add hancuke/minimal_domain_modeling --skill minimal-domain-modeling
+```
+
+默认安装到当前项目。安装到 Claude Code 个人目录，供所有项目使用：
+
+```sh
+npx skills add hancuke/minimal_domain_modeling \
+  --skill minimal-domain-modeling \
+  --agent claude-code \
+  --global
+```
+
+将 `--skill` 的值替换为 `shape` 或 `uidesign` 可安装其他 Skill。`npm install skills` 只安装 Skills CLI，不会安装本仓库的 Skill；无需将本仓库发布到 npm。
+
+GitHub 安装读取已推送的文件；私有仓库需要目标机器配置有访问权限的 Git 凭据。更新已有安装前先比较版本与本地修改，避免覆盖。
+
+安装方式参考 [Skills CLI 文档](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)。
+
+### 手动复制
+
+将本项目复制到目标机器，并在本仓库根目录执行以下个人安装命令。目标目录已存在时先比较差异，避免覆盖当地修改。
 
 Claude Code 个人安装：
 
 ```sh
 mkdir -p "$HOME/.claude/skills"
 test ! -e "$HOME/.claude/skills/minimal-domain-modeling" &&
-  cp -R minimal-domain-modeling "$HOME/.claude/skills/"
+  cp -R skills/minimal-domain-modeling "$HOME/.claude/skills/"
 ```
 
 Claude Code 项目安装，在目标业务项目根目录执行；将源路径替换为本项目的实际路径：
@@ -37,7 +72,7 @@ Claude Code 项目安装，在目标业务项目根目录执行；将源路径�
 ```sh
 mkdir -p .claude/skills
 test ! -e .claude/skills/minimal-domain-modeling &&
-  cp -R /path/to/minimal_domain_modeling/minimal-domain-modeling .claude/skills/
+  cp -R /path/to/minimal_domain_modeling/skills/minimal-domain-modeling .claude/skills/
 ```
 
 以上命令在已有同名目录时停止复制；它们不是更新命令。
@@ -49,6 +84,8 @@ test ! -e .claude/skills/minimal-domain-modeling &&
 
 ## 维护规则
 
+- 每个 Skill 放在 `skills/<name>/`，其 `SKILL.md` 包含必需的 `name` 和 `description`，名称唯一且与目录名一致。
+- 以下正文、reference、template 和评估规则针对 `minimal-domain-modeling`。
 - 修改行为时，先确定规则的唯一归属：执行与完成标准在正文，信息保留判断在 reference，展示结构在 template。
 - 正文只直接引用上述两个文件，并说明读取条件。新增参考文件应对应实际分支，不为目录完整性拆文件。
 - 共用的必要规则留在正文；仅部分任务需要的细节按需加载。避免让 Agent 为一次简单建模读取整套材料。
