@@ -8,21 +8,46 @@ description: Design technical solutions from established requirements or a selec
 Technical design gives confirmed behavior clear responsibility, state, and
 failure semantics; adding layers is not the goal.
 
-## Principles
+## Principles 
 
-- **Earn abstractions:** Each abstraction must own a current complexity or
-  constraint, not hypothetical reuse.
-- **Own coordination:** Assign state, side effects, ordering, and partial failures
-  together when they belong to the same operation.
-- **Justify seams:** Require concrete variation, contract isolation, failure
-  control, or deterministic testing; provider count is not the criterion.
-- **Preserve evidence:** Refactoring must retain equivalent coverage of important
-  behavior before retiring old verification.
+### 1. Make the main path obvious
 
-**Good:** Put an email provider behind a seam to simulate acceptance followed by
-a timeout. **Avoid:** Add multi-provider routing without a switching requirement.
+Make the main job of the code obvious without forcing readers through layers of mechanism.
+
+### 2. Keep rules regular and orthogonal
+
+Avoid designs where one feature subtly changes the meaning of another.
+
+### 3. Prefer small sharp tools over framework accretion
+
+Favor components that do one job cleanly and combine predictably with others.
+
+### 4. Use plain words and plain structure
+
+Choose names and structures that say exactly what they do, with as little ceremony as possible.
+
+## Behavioral Constraints
+
+- Remove options that do not serve the primary job.
+- Prefer a regular rule over a pile of special cases.
+- Do not invent framework structure when a simple tool, function, or pipeline is enough.
+- Keep naming literal and flow visible.
+- Minimize the number of concepts a reader must hold at once.
+
+
+
+## Default Execution Mode
+
+1. State the main job in one plain sentence.
+2. Delete or fold away features that distract from that job.
+3. Regularize the structure so similar things work the same way.
+4. Make data flow and naming obvious.
+5. Validate that the result is easier to explain without jargon.
+
+
 
 ## Execution contract
+
 
 - Start from confirmed requirements or a selected diagnostic recommendation.
   Business rules and visual design are inputs; surface contradictions rather
