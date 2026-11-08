@@ -1,50 +1,80 @@
 ---
 name: ui-design
-description: Design or improve interface hierarchy, layout, typography, and responsive composition around established user tasks and data. Use when creating a page or component, restyling an interface, or reviewing rendered UI. Preserve business behavior and data contracts; implement and inspect the rendered result when the task requests a working interface.
+description: Design interface hierarchy and composition, review rendered UI, or implement pages, components, and restyling around established user tasks and data. Preserve business behavior and data contracts. Change code only when implementation is requested.
 ---
-# UI Design Brief
 
-## 1. Understand the page
-Before writing code, identify:
-- The primary user task.
-- The single most important piece of information.
-- The secondary information and actions.
-- The intended reading or interaction sequence.
+# UI Design
 
-## 2. Choose a design direction
-Choose a suitable direction based on the content:
-- Product UI: efficient, structured, information-dense.
-- Editorial: typography-led, asymmetric, spacious.
-- Data-centric: evidence-led, chart-focused, analytical.
-- Expressive: bold composition, strong focal point, distinctive typography.
+Composition should shorten the user's path to the task, not compete with it.
 
-Do not combine styles arbitrarily. Explain why the chosen direction fits the page.
+## Principles
 
-## 3. Design the composition
-Define:
-- The page's major regions and their relative proportions.
-- The primary visual focal point.
-- The layout and alignment of each region.
-- Typography hierarchy and content density.
-- Where whitespace, contrast, and size variation should create rhythm.
+- **Task first:** Let the primary task determine reading order and action priority.
+- **Semantic consistency:** Use the same treatment for the same meaning; choose
+  different structures when comparison, explanation, or action requires them.
+- **Useful density:** Balance scanability and detail for the task, not a preferred
+  amount of whitespace.
+- **Earned emphasis:** Reserve visual prominence for important information and
+  actions. Decoration comes after behavior, readability, and responsive layout.
 
-Do not automatically place every section inside an identical card. Choose the presentation format that best expresses the content.
+**Good:** Compare pending approvals in aligned rows, with a clear primary action
+and quieter supporting details.
 
-## 4. Implement
-Preserve the existing project's framework, components, and conventions.
-Build the page using reusable components and consistent design tokens.
-Prioritize behavior, semantic structure, readability, and responsive layout before decorative details.
+**Avoid:** Turn every approval into a large card, forcing scrolling and making
+cross-item comparison harder.
 
-## 5. Review the rendered page
-Run the application and inspect actual screenshots.
-Ask:
-- Is the primary focal point immediately obvious?
-- Is the visual hierarchy clear without reading everything?
-- Does the layout have intentional variation and rhythm?
-- Are charts, tables, text, and cards used for the right reasons?
-- Does the page look intentionally designed, or like a generic AI-generated template?
-- Does the layout still work on smaller screens?
+## Execution contract
 
-Fix the most consequential visual problems before adding more decoration.
+| Request | Work | Finish |
+|---|---|---|
+| Design | Propose hierarchy, composition, and trade-offs | Explain the task path and key choices; leave code unchanged |
+| Review | Inspect the existing rendering and rank findings | Cite screenshots or specific regions; leave code unchanged |
+| Implement | Change the interface and inspect its rendering | Report changes, checks, and remaining limitations |
 
-Deliver the working page, then briefly report the design decisions and any remaining limitations.
+Preserve business behavior and data contracts in every branch. Clarify unknowns
+that would change the task or interaction. Keep a small request small.
+
+## 1. Frame the task
+
+Identify the primary task, key information, secondary actions, and interaction
+sequence. Inspect supplied content and existing conventions.
+
+**Exit:** The task and information priorities are clear, or affected choices
+are explicitly provisional.
+
+## 2. Design or assess the composition
+
+Choose regions, alignment, typography, density, and emphasis using the principles.
+Explain consequential choices, such as a comparison table versus individual cards.
+For reviews, apply step 4's checks to the existing rendering rather than
+redesigning by default.
+
+**Exit:** Each recommendation addresses a task need or an evidenced problem.
+Design-only requests finish with the proposal and its validation needs.
+
+## 3. Implement when requested
+
+Use the project's framework, components, and design tokens. Keep related callers
+and interactions consistent; prioritize the most consequential problems.
+
+**Exit:** Requested changes are implemented, or blockers are explicit.
+
+## 4. Verify the rendering and interactions
+
+For reviews, inspect the existing page; for implementations, inspect the changed
+page. Run the application when available and capture actual screenshots.
+
+Check applicable behavior:
+
+- The primary action is distinguishable from secondary actions.
+- Alignment and labels support scanning or comparison.
+- Long content and narrow screens preserve access and task order.
+- Keyboard navigation, focus, and labels support the primary interaction.
+- Relevant empty, loading, and error states remain understandable.
+
+Screenshots support visual findings; exercise interactions to verify behavior.
+If rendering or interaction tools are unavailable, name the missing evidence
+and keep those conclusions unverified. Code inspection is not rendered proof.
+
+**Exit:** Report findings or changes with evidence, checks, and unverified items.
+Only a verified implementation is described as a working interface.

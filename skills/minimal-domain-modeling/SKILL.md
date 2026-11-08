@@ -8,11 +8,28 @@ description: Model or simplify business concepts, responsibilities, rules, relat
 Preserve the required business meaning with the fewest justified concepts.
 Optimize for understandable rules and boundaries, not object count.
 
+## Principles
+
+- **Minimal sufficiency:** Merge or remove a concept only when required facts,
+  rules, and boundaries remain expressible.
+- **Independent change:** Retain distinctions justified by independent identity,
+  rules, or lifecycles, not hypothetical reuse.
+- **Rule ownership:** Put a decision with the concept enforcing its constraint,
+  not merely the concept holding related data. Define each rule once.
+- **Bounded uncertainty:** Unconfirmed business rules support provisional choices,
+  not a confirmed model.
+
+**Good:** Keep an approval task when claiming, transfer, and expiry create its own
+facts and lifecycle. **Avoid:** Remove it because a pending-task list is calculable.
+
+**Good:** Model cancellable quantities for partially fulfilled orders.
+**Avoid:** Replace that distinction with one order-level cancelled flag.
+
 ## Execution contract
 
 - Model the business; leave implementation and architectural choices to a separate task.
 - Use the user's business vocabulary. Resolve overloaded terms before depending on them.
-- Distinguish confirmed requirements, provisional assumptions, and open questions.
+- Label confirmed requirements, provisional assumptions, and open questions.
 - Read supplied requirements and relevant existing models or code when available.
   Surface contradictions between them; ask which behavior is intended.
 - For a new model, follow the stages below. For a focused review, inspect the
@@ -31,8 +48,7 @@ could change identity, a key rule, lifecycle, ownership, or retention. Ask only
 the questions needed to resolve the current blocker.
 
 If clarification is unavailable, present alternatives or a provisional model
-with explicit assumptions. Keep the affected decisions unresolved rather than
-claiming a confirmed model.
+with explicit assumptions and affected decisions.
 
 **Exit:** The scope and intended outcome are stated; consequential unknowns are
 resolved or explicitly bound the provisional work.
@@ -47,15 +63,8 @@ Use entities, value objects, and finite classifications when helpful. Business
 events, rules, policies, and processes are also valid concepts when required by
 the problem. These are analytical categories, not a mandate to create classes.
 
-Test each candidate:
-
-- Does it express a required fact, rule, responsibility, or lifecycle?
-- Could another concept express that meaning without obscuring a boundary?
-- Would removing it lose a required scenario or constraint?
-- Is it justified by current requirements rather than hypothetical reuse?
-
-Merge duplicates; retain distinctions with independent identity, rules, or
-lifecycles. Explain consequential exclusions briefly.
+Apply minimal sufficiency and independent change to each candidate. Name the
+required meaning it protects; explain consequential merges and exclusions.
 
 **Exit:** Each retained concept has a business reason to exist; no confirmed
 requirement has been removed in the name of simplicity.
@@ -66,9 +75,8 @@ For important concepts, describe their responsibilities, supported business
 operations, and invariants. For consequential operations, identify the conditions
 for acceptance, resulting facts or state changes, and business rejection cases.
 
-Keep decisions with the concept responsible for enforcing them, not merely the
-one holding related data. Give every important rule one authoritative definition;
-refer to it from interactions and scenarios instead of restating it.
+Apply rule ownership; refer to the authoritative rule from interactions and
+scenarios.
 
 For a decision spanning several concepts, describe a business-named rule, policy,
 or process and its participants. A collaboration need does not by itself require
@@ -114,12 +122,8 @@ For each scenario, trace the input or action, applicable rule, participating
 concepts, accepted or rejected transitions, and resulting business facts.
 When retention is in scope, check what remains recoverable after restart.
 
-Check that:
-
-- Every confirmed in-scope requirement is covered by a rule, fact, or scenario.
-- Every important rule has a responsible concept or collaboration.
-- Removing a retained concept would lose necessary meaning or obscure a boundary.
-- No scenario relies on an invented business rule.
+Check every confirmed in-scope requirement against a rule, fact, or scenario.
+Use the principles to check concept necessity, rule ownership, and assumptions.
 
 If a scenario fails, revise the relevant earlier stages and run it again.
 Treat proposed edge-case behavior as a question until the business confirms it.

@@ -1,99 +1,113 @@
 ---
 name: implementation-design
-description: Design technical modules, interfaces, dependencies, data flows, and failure handling from established requirements. Use when defining project architecture, planning a feature's implementation, or refactoring technical boundaries. Treat business rules and visual design as inputs; implement and verify when the task requests code changes.
+description: Design technical solutions from established requirements or a selected refactoring recommendation. Use when defining project architecture, planning a feature's implementation, or turning a chosen technical change into a delivery plan. Implement and verify only when code changes are requested.
 ---
 
-# Design Before Code
+# Implementation Design
 
-## Goal
+Technical design gives confirmed behavior clear responsibility, state, and
+failure semantics; adding layers is not the goal.
 
-Before writing code, design the smallest solution that makes the system easy to understand, maintain, and extend.
+## Principles
 
-Prioritize business intuition, clear boundaries, simple composition, and explicit behavior. Avoid unnecessary abstractions and documentation.
+- **Earn abstractions:** Each abstraction must own a current complexity or
+  constraint, not hypothetical reuse.
+- **Own coordination:** Assign state, side effects, ordering, and partial failures
+  together when they belong to the same operation.
+- **Justify seams:** Require concrete variation, contract isolation, failure
+  control, or deterministic testing; provider count is not the criterion.
+- **Preserve evidence:** Refactoring must retain equivalent coverage of important
+  behavior before retiring old verification.
 
-## Workflow
+**Good:** Put an email provider behind a seam to simulate acceptance followed by
+a timeout. **Avoid:** Add multi-provider routing without a switching requirement.
 
-### 1. Understand the Problem
+## Execution contract
 
-- Identify the problem, desired behavior, and acceptance criteria.
-- Inspect relevant existing code, architecture, conventions, and tests.
-- Identify business rules, constraints, and compatibility requirements.
-- Do not propose architecture before understanding the actual problem.
+- Start from confirmed requirements or a selected diagnostic recommendation.
+  Business rules and visual design are inputs; surface contradictions rather
+  than silently changing them.
+- New features do not require a prior module-deepening diagnosis. Open-ended
+  investigation of existing structural problems belongs to `module-deepening`.
+- For design or review requests, deliver the design and stop. For code-change
+  requests, continue through implementation and verification.
+- Scale the work to the decision: a small change may need a few sentences,
+  not a module diagram or a checklist for every function.
+- Read [design-principles.md](../module-deepening/references/design-principles.md)
+  when evaluating module boundaries, dependency isolation, or consequential
+  architectural choices. A local change with no such decision uses the principles
+  above without loading references.
+  Read [deepening.md](../module-deepening/references/deepening.md) when the change
+  requires dependency substitution, seam changes, or test migration.
+  Read [alternatives.md](../module-deepening/references/alternatives.md) when
+  designs have consequential differences in caller obligations, state ownership,
+  or dependency direction, or alternatives are explicitly requested.
+- Install these references in the sibling `module-deepening` directory.
+  Reading them does not invoke diagnosis. If a required read fails, report the
+  path and keep affected judgments provisional.
 
-### 2. Design the Solution
+## 1. Confirm inputs and constraints
 
-Determine the appropriate design scope based on the task.
+Identify desired behavior, acceptance criteria, scope, and compatibility needs.
+Inspect relevant code, conventions, and tests.
 
-- **Project architecture:** Define major modules, their responsibilities, dependency directions, and entry points.
-- **Feature or module:** Define responsibilities, boundaries, interfaces, and interactions.
-- **Class or method:** Define intent, inputs, outputs, side effects, and behavioral constraints.
+When a diagnosis is supplied, reuse its evidence and selected candidate. Check
+the assumptions that affect the solution rather than rerunning the whole scan.
+Ask when an unresolved rule or architectural choice would materially change the
+design. If clarification is unavailable, label the affected design provisional.
 
-Apply these design principles:
+**Exit:** Required behavior and significant constraints are stated; consequential
+unknowns are resolved or explicitly limit the design.
 
-1. **Semantic clarity:** Names and interfaces express business intent, not merely implementation details.
-2. **Clear responsibilities:** Each component has a coherent purpose and an explicit boundary.
-3. **Explicit dependencies:** Important dependencies, data flows, and side effects are easy to trace.
-4. **Predictable behavior:** Inputs, outputs, state transitions, and failure behavior are understandable.
-5. **Verifiable constraints:** Important business rules and edge cases can be checked through tests, types, or runtime validation.
-6. **Discoverable knowledge:** Architecture decisions, business rules, and usage guidance are documented where developers expect to find them.
+## 2. Form the technical solution
 
-### 3. Evaluate the Design
+Define responsibilities and interactions at the appropriate scale: project,
+feature, module, or method. Specify the interface, dependency direction, relevant
+state transitions, data flows, side effects, and failure handling.
 
-Before implementation, challenge the proposed solution:
+Apply the principles to the solution. Preserve existing contracts unless changes
+are authorized. Use project terminology and existing places for durable decisions.
 
-- Can another developer understand the design without reading every implementation detail?
-- Does each abstraction solve a real problem?
-- Are responsibilities and dependency directions clear?
-- Can likely changes be localized to the relevant components?
-- Are there simpler alternatives with fewer concepts and smaller interfaces?
-- Does the design preserve existing behavior and important business constraints?
+**Exit:** The solution explains how the required scenarios work and who owns the
+important decisions, state, and effects.
 
-Consider alternatives only when they represent meaningfully different trade-offs. Prefer the simplest design that satisfies the requirements.
+## 3. Challenge the solution
 
-Do not introduce speculative abstractions for hypothetical future requirements.
+Trace actual caller and change scenarios. Challenge added concepts, caller
+obligations, ownership, and compatibility using the principles and applicable
+references.
 
-### 4. Present the Plan Before Coding
+Use the optional references under their reading conditions. Identify tests,
+types, runtime checks, and integration checks that protect important behavior.
+For refactors, map existing coverage using the test-migration reference.
 
-Present a concise design proposal containing:
+**Exit:** Significant trade-offs and verification needs are explicit; added
+complexity has a current justification and important compatibility risks are
+accounted for.
 
-- **Approach:** What will change and why.
-- **Responsibilities and boundaries:** Which components are involved and what each owns.
-- **Interactions:** How components collaborate; use a diagram when it clarifies important flows.
-- **Verification:** How correctness and important edge cases will be tested.
-- **Trade-offs:** Mention only significant alternatives, risks, or unresolved decisions.
+## 4. Deliver the design
 
-Scale the proposal to the task. A small method change may need only a few sentences. A project-level change may require a module diagram and dependency rules.
+Present the approach and why it fits, the relevant responsibilities and
+interactions, verification strategy, and only significant risks or alternatives.
+Use a diagram or code sketch when it clarifies the decision.
 
-If a critical ambiguity or architectural decision could materially change the solution, ask the user before proceeding. Otherwise, state reasonable assumptions and continue.
+For refactors, include caller migration, compatibility checks, and a recovery
+or rollback approach proportionate to deployment and data risk. State whether
+the design is confirmed or provisional.
 
-### 5. Implement and Verify
+**Exit:** The user can understand the proposed solution and how to validate and
+safely introduce it. Design-only and review requests finish here.
 
-After the design is sufficiently clear:
+## 5. Implement and verify when requested
 
-- Implement according to the agreed design.
-- Prefer the smallest coherent change.
-- Follow existing project conventions unless there is a concrete reason to change them.
-- Run relevant tests and other available checks.
-- If implementation reveals a flawed assumption or boundary, revisit the design rather than patching around it blindly.
+Proceed only for a code-change request and after consequential uncertainties
+are resolved. Make the smallest coherent change, follow project conventions,
+and keep dependent callers consistent.
 
-## Guardrails
+Run checks covering the changed behavior and relevant integration risks using
+existing tooling. If implementation invalidates an assumption, revisit the
+affected design rather than hiding the mismatch behind a workaround.
 
-- Do not start implementation before completing the design step.
-- Do not turn the six principles into a mandatory checklist for every function or class.
-- Do not create unnecessary layers, interfaces, classes, diagrams, or documents merely to demonstrate good design.
-- Do not confuse descriptive names with clear responsibilities.
-- Do not claim correctness without appropriate verification.
-- Do not redesign unrelated parts of the system.
-
-## Completion Criteria
-
-The design is acceptable when:
-
-1. The intended behavior and important constraints are clear.
-2. Responsibilities and interfaces are understandable.
-3. Dependencies and significant side effects are visible.
-4. The solution is no more complex than necessary.
-5. Important behavior can be verified.
-6. The implementation can be changed without unnecessary ripple effects.
-
-The objective is not perfect architecture. It is a design that developers can understand, verify, and safely change.
+**Exit:** The requested change is implemented and appropriate checks have run,
+or blockers and unverified behavior are stated explicitly. A completed design
+is not evidence of a verified implementation.
