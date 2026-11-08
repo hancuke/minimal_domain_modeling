@@ -126,44 +126,7 @@ test ! -e .claude/skills/minimal-domain-modeling &&
 
 安装方式参考 [Claude Code Skills 文档](https://code.claude.com/docs/en/skills)。
 本包只使用标准 `name` 和 `description` 元数据，不使用平台专属执行扩展。
-
-## 维护规则
-
-- 每个 Skill 放在 `skills/<name>/`，其 `SKILL.md` 包含必需的 `name` 和 `description`，名称唯一且与目录名一致。
-- 每条规则有一个权威归属；正文用任务特有原则和示例指导应用，reference 提供定义及分支细则。修改技术设计或 UI 行为时，更新 `evaluations/design-cases.json`。
-- 发布时检查 Skill 文件、引用材料及声明的必需依赖在安装后可用。更新安装前比较版本与本地修改，不直接覆盖。
-- 以下正文、reference、template 和评估规则针对 `minimal-domain-modeling`。
-- 修改行为时，先确定规则的唯一归属：执行与完成标准在正文，信息保留判断在 reference，展示结构在 template。
-- 正文只直接引用上述两个文件，并说明读取条件。新增参考文件应对应实际分支，不为目录完整性拆文件。
-- 共用的必要规则留在正文；仅部分任务需要的细节按需加载。避免让 Agent 为一次简单建模读取整套材料。
-- 业务示例用于说明判断，不作为未经确认的业务默认值。
-- 新增或修复行为时，更新 `evaluations/cases.json` 中对应的场景，避免重复测试相同分支。
-
-## 回归验证
-
-`evaluations/cases.json` 是可重复使用的评估输入与验收标准，不是已通过的测试报告，也不要求特定评估框架。
-
-1. **触发测试：** 在新会话中只提供 `SKILL.md` 的元数据和一个 discovery 请求，判断是否应该加载；与 `should_trigger` 比较。再在目标工具实际安装后检查是否加载了 Skill。
-2. **执行测试：** 为每个 execution 场景开启独立会话，加载 Skill 并发送请求。逐项检查 `checks`；需要澄清的场景先观察提问，不提供答案时再检查暂定结果。
-3. **披露测试：** 检查文件读取记录。信息保留任务应读取 reference；明确要求完整模型文档时应读取 template；简短建模不应默认读取 template。
-4. **效果比较：** 用相同请求比较无 Skill、上一版本与当前版本的可观察产物，包括误触发、编造规则、遗漏场景和不必要复杂度。涉及模型或工具更换时重跑。
-
-记录实际使用的模型、工具版本、Skill 版本、通过项及失败证据。只检查可观察的调用与输出，不依赖模型内部思考过程。
-
-建议初次发布至少运行全部场景；局部修改先运行相关场景，发布前再运行全部。静态结构检查不能代替实际 Agent 评估。
-
-### 技术设计与 UI 评估
-
-`evaluations/design-cases.json` 同样是输入与验收标准，不是已通过的报告：
-
-- `discovery` 只加载四个入口的元数据，将实际选择与逐 Skill 的 `should_trigger` 比较，不预先透露期望值。组合请求检查所需入口，不要求一次执行全部流程。
-- `execution` 每个场景使用独立会话，加载指定 `skill` 并执行 `prompt`。代码片段中的路径是场景输入，不代表当前仓库文件；记录回答与实际工具行为，逐项核对 `checks`。
-- `disclosure` 检查读取记录与缺失依赖处理。简单局部改动不加载设计参考；架构分支按条件读取，且不触发诊断流程。
-- UI 评估使用一次性 HTML 副本和实际截图；设计、评审场景检查未修改文件。无渲染工具的场景检查是否明确区分代码风险与已观察问题。缺少截图时，渲染评审场景标记未运行。
-- 安装验证在临时目录放置两个完整 Skill 目录，检查所有相对引用可达；目标工具实际安装后的发现和读取仍需另行验证。
-
-分别记录静态检查、实际执行的场景、失败证据与未运行项。新旧版本效果比较以及目标工具安装验证不能由静态检查或少量代表性场景代替。
-
+ 
 ## 编写依据
 
 - [Anthropic Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
