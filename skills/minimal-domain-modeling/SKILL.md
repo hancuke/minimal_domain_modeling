@@ -1,6 +1,6 @@
 ---
 name: minimal-domain-modeling
-description: Model or simplify business concepts, responsibilities, rules, relationships, lifecycles, and retention requirements. Use when translating business requirements into a domain model or reviewing existing business boundaries. Leaves technical architecture and UI design to separate tasks.
+description: Define business meaning through the fewest sufficient concepts, their responsibilities, collaboration, lifecycles, and invariants. Use when clarifying business requirements or reviewing business boundaries, including when existing code supplies evidence. Produce a concise system-level business model; software structure and implementation belong to software-design.
 ---
 
 # Minimal Domain Modeling
@@ -28,12 +28,17 @@ facts and lifecycle. **Avoid:** Remove it because a pending-task list is calcula
 ## Execution contract
 
 - Model the business; leave implementation and architectural choices to a separate task.
+- Choose this skill when business meaning needs a decision. A technical change
+  under established business rules belongs to `software-design`; business vocabulary
+  in a request does not by itself make it a modeling task.
 - Use the user's business vocabulary. Resolve overloaded terms before depending on them.
 - Label confirmed requirements, provisional assumptions, and open questions.
 - Read supplied requirements and relevant existing models or code when available.
   Surface contradictions between them; ask which behavior is intended.
 - For a new model, follow the stages below. For a focused review, inspect the
   affected stages and their dependencies rather than rebuilding the entire model.
+- Separate the modeling process from its document. Task framing and scenario
+  checks guide the work; the document describes the system's business structure.
 - Revisit earlier stages when scenarios, capabilities, or lifecycles expose a
   missing distinction. The stage order is a starting path, not a one-way gate.
 
@@ -42,6 +47,7 @@ facts and lifecycle. **Avoid:** Remove it because a pending-task list is calcula
 State the current situation, desired outcome, core business problem, and scope.
 Separate a proposed implementation from the need it serves, while preserving
 external constraints that actually affect the business.
+Keep this task framing out of the system model document.
 
 Identify unknowns before choosing concepts. Ask for clarification when an unknown
 could change identity, a key rule, lifecycle, ownership, or retention. Ask only
@@ -75,6 +81,9 @@ For important concepts, describe their responsibilities, supported business
 operations, and invariants. For consequential operations, identify the conditions
 for acceptance, resulting facts or state changes, and business rejection cases.
 
+An invariant is a business constraint that every valid state or transition must
+preserve. Distinguish it from a workflow step or implementation technique.
+
 Apply rule ownership; refer to the authoritative rule from interactions and
 scenarios.
 
@@ -107,7 +116,8 @@ restrictions agree with the capabilities and invariants.
 When the task introduces or changes business information, historical records,
 or recovery expectations, read [Information and retention](references/information-and-retention.md).
 For a focused review that does not affect them, state that retention is unchanged
-or outside the reviewed scope instead of inventing a persistence design.
+in the review response when relevant, rather than adding a task-local note to
+the system model or inventing a persistence design.
 
 **Exit:** Affected information has a justified retention decision or an explicit
 open question. Reconstructibility and retention are evaluated separately.
@@ -133,15 +143,39 @@ unresolved behavior is visibly excluded from any completion claim.
 
 ## Deliver the model
 
-Default to a compact answer containing the problem and scope, retained concepts,
-important rules and interactions, relevant lifecycle and retention decisions,
-scenario results, and remaining assumptions or questions. Omit inapplicable detail.
+Read [Model template](assets/model-template.md) when producing a model. Use its
+three sections for both brief and larger models:
 
-For an explicitly requested full modeling document, or a model too complex for
-that compact form, read [Full model template](assets/model-template.md).
-Use only its applicable sections; it defines presentation, not extra modeling rules.
-Write a file only when requested or required by the project's established workflow.
+1. **Concepts and responsibilities:** The fewest sufficient business concepts,
+   each with a short meaning and responsibility. Include identity, essential facts,
+   ownership, and cardinality only where they explain rules or lifecycles.
+2. **Collaboration and lifecycles:** Essential interactions and meaningful state
+   transitions, including their triggers, conditions, and outcomes. Keep independent
+   lifecycles distinct.
+3. **Business invariants:** Constraints that must hold, each with its responsible
+   concept or business collaboration.
 
-Label the result **Confirmed within scope** only when the scenario checks pass
-and no consequential business decision remains unknown. Otherwise label it
-**Provisional** and identify the blocking questions and affected decisions.
+Define each fact or rule once and reference it elsewhere. Fold necessary retention
+obligations into the relevant responsibility, lifecycle, or invariant. Prefer short
+sentences and compact tables; use diagrams only to resolve specific ambiguity.
+Let complexity determine length, not a checklist of optional fields.
+
+Describe the integrated system model, not an incremental change proposal. Update
+an existing model in place, preserving unaffected business meaning. Keep task
+scope, exclusions, change lists, scenario logs, validation status headings, and
+implementation plans out of the document. Scenario checks remain mandatory work,
+not extra document sections.
+
+Use the available system context; if it is insufficient for a global model,
+report the missing context separately rather than inventing the rest. Mark
+provisional statements next to the affected concept or rule and raise blocking
+questions in the response. Claim validation only for behavior whose scenario
+checks passed and whose consequential business decisions are confirmed.
+
+For a focused review without a model-document request, give compact findings
+rather than reproducing the system model. Write a file only when requested or
+required by the project's established workflow.
+
+The model is a business-semantic contract for `software-design`, not a class or
+module blueprint. Hand off when software design is requested; that skill may map
+business concepts to different code boundaries while preserving their meaning.

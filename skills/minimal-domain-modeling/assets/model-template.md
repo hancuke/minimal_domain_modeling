@@ -1,57 +1,27 @@
-# Minimal Domain Model: [Business Problem]
+# [System Name] Business Model
 
-**Status:** [Confirmed within scope / Provisional]
+## Concepts and responsibilities
 
-Use applicable sections only. Follow the rules in SKILL.md and its retention
-reference; this template adds no requirements.
+| Concept | Business meaning | Responsibility |
+|---|---|---|
+| ... | ... | ... |
 
-## Problem and scope
+Include identity, essential facts, ownership, or cardinality only when needed
+to explain a rule or lifecycle.
 
-- Current situation:
-- Desired outcome:
-- Core business problem:
-- Included / Excluded:
-- Confirmed requirements:
-- Provisional assumptions and blocking questions:
+## Collaboration and lifecycles
 
-## Concepts and relationships
+Describe essential interactions: who initiates, which concepts participate,
+what changes, and under which conditions. For stateful concepts, show creation,
+meaningful transitions, and completion or termination. Keep independent lifecycles
+separate; reference invariants instead of repeating them.
 
-| Concept | Business meaning | Identity, if needed | Essential facts |
-|---|---|---|---|
-| ... | ... | ... | ... |
+Use short text or a compact transition table; add a diagram only to resolve ambiguity.
 
-Describe important associations, cardinalities, ownership, and any consequential
-exclusions or merges.
+## Business invariants
 
-## Capabilities and rules
+| Invariant | Responsible concept or collaboration |
+|---|---|
+| ... | ... |
 
-### [Important concept or business collaboration]
-
-- Responsibilities:
-- Operations and their acceptance conditions:
-- Resulting facts or changes:
-- Invariants and business rejection cases:
-- Participants, if this is a collaboration:
-
-Define rules here once; reference them in the sections below.
-
-## Essential interactions and lifecycles
-
-Describe the core business paths and applicable independent lifecycles.
-Use tables or diagrams only when they resolve ambiguity.
-
-## Information and retention
-
-Use the reporting table from references/information-and-retention.md if retention
-is in scope. Otherwise omit this section or state the review boundary.
-
-## Scenario validation
-
-| Scenario | Rules exercised | Expected business effects | Supported / Unresolved |
-|---|---|---|---|
-| ... | ... | ... | ... |
-
-## Remaining decisions
-
-List only unresolved questions, affected model decisions, and relevant limitations.
-For a provisional model, make clear what requires business confirmation.
+State constraints that every valid state or transition must preserve.

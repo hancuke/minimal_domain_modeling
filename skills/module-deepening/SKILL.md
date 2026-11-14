@@ -1,6 +1,6 @@
 ---
 name: module-deepening
-description: Diagnose module-deepening opportunities in existing code. Use when callers repeat business rules or coordination logic, changes ripple across modules, or the user asks to evaluate existing module boundaries and seams.
+description: Independently diagnose module-deepening opportunities in existing code and judge whether a change is worthwhile. Use for assessment of repeated caller knowledge, changes rippling across modules, or existing boundaries and seams. Target software design and implementation belong to software-design.
 ---
 
 # Module Deepening
@@ -48,9 +48,9 @@ risk, and migration cost. Retaining the current structure is a valid outcome.
 ## Execution contract
 
 Diagnose existing code and output recommendations, not code changes. New-feature
-design belongs to `implementation-design`. When implementation is also requested,
-resolve consequential candidate choices and hand off evidence, constraints,
-interface direction, and verification needs to that skill.
+design and goal-driven redesign belong to `software-design`. When implementation
+is also requested, resolve consequential candidate choices and hand off evidence,
+constraints, interface direction, and verification needs to that skill.
 
 Bound the inspected area and compatibility constraints. For codebase-wide requests,
 scan entry points, tests, and dependencies to choose a concrete area; expand only

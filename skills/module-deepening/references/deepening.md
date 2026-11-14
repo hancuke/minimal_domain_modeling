@@ -57,5 +57,5 @@ made redundant by equivalent coverage or tied exclusively to removed structure.
 
 For implementation handoff, identify compatibility obligations, integration
 risks, coverage gaps, and whether staged caller migration is necessary.
-`implementation-design` turns these into an actionable migration and verification
+`software-design` turns these into an actionable migration and verification
 plan; a diagnosis alone does not claim the migration has succeeded.

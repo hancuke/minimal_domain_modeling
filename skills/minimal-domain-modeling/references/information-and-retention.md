@@ -52,11 +52,12 @@ separate from the business requirement to preserve a record.
 
 These examples illustrate questions, not default rules for every domain.
 
-## Report only relevant decisions
+## Integrate only relevant decisions
 
-| Information item | Nature | Retention requirement | Source or reconstruction basis | Business reason / Unknown |
-|---|---|---|---|---|
-| ... | ... | ... | ... | ... |
+Use these dimensions to evaluate information, not to generate a classification
+report. Put resulting business obligations and essential reconstruction grounds
+with the relevant concept's responsibility, lifecycle, or invariant in the model.
+Keep retention duration or other obligations visibly undecided where necessary.
 
 Verify that required history and commitments survive restart, and that any
 reconstruction claim names sufficient preserved inputs. Surface missing inputs

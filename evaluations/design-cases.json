@@ -3,73 +3,91 @@
     {
       "id": "independent-deepening-diagnosis",
       "prompt": "Inspect our existing checkout code for duplicated knowledge and changes that ripple across callers. Rank module-deepening opportunities; do not implement.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "implementation-design": false, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "software-design": false, "ui-design": false },
       "reason": "Open-ended diagnosis of existing structural problems."
     },
     {
       "id": "existing-interface-assessment",
       "prompt": "Assess whether our existing storage interfaces make callers know too much about call ordering and adapter errors. Keeping the current design is an acceptable result.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "implementation-design": false, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "software-design": false, "ui-design": false },
       "reason": "Assesses caller obligations without a selected delivery goal."
     },
     {
       "id": "new-feature-design",
       "prompt": "The business rules for password reset are approved. Design its technical implementation, data flow, and failure handling. Do not change code.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": true, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": true, "ui-design": false },
       "reason": "Goal-driven design does not require a structural diagnosis."
     },
     {
       "id": "selected-refactor",
       "prompt": "We selected the recommendation to centralize retry translation in DeliveryGateway. Plan and implement that refactor while preserving its callers' behavior.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": true, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": true, "ui-design": false },
       "reason": "A selected change needs delivery rather than another open-ended scan."
+    },
+    {
+      "id": "goal-driven-existing-redesign",
+      "prompt": "Read our current upload implementation and redesign it so callers no longer coordinate chunk cleanup. Cancellation and public errors are already specified and must be preserved. Propose the target interfaces and migration plan; do not implement.",
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": true, "ui-design": false },
+      "reason": "Existing-code diagnosis serves a requested target design, without requiring a prior selected recommendation."
+    },
+    {
+      "id": "domain-document-to-software",
+      "prompt": "Our library business model document is approved. Design the software modules and borrowing interface that enforce its invariants. Do not equate every business concept with a class, and do not implement.",
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": true, "ui-design": false },
+      "reason": "Consumes established business semantics rather than rebuilding the domain model."
+    },
+    {
+      "id": "business-meaning-from-implementation",
+      "prompt": "Read our current order cancellation implementation to clarify which quantities are cancellable and who owns that business rule. Produce a concise business model; leave code structure unchanged.",
+      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "software-design": false, "ui-design": false },
+      "reason": "Code is evidence for a business-semantic decision, not a request for software redesign."
     },
     {
       "id": "diagnose-and-deliver",
       "prompt": "Diagnose duplicated coordination in the existing upload flow. If one low-risk candidate is clearly strongest, implement it; ask before making a consequential choice.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "implementation-design": true, "ui-design": false },
-      "reason": "Diagnosis followed by conditional handoff for requested code changes."
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": true, "software-design": true, "ui-design": false },
+      "reason": "Independent diagnosis followed by conditional design handoff; implementation still requires explicit design approval."
     },
     {
       "id": "business-rule-discovery",
       "prompt": "We have not decided whether refunds require one approval or unanimous approval. Model the minimum business concepts and rules; leave technical design for later.",
-      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "implementation-design": false, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "software-design": false, "ui-design": false },
       "reason": "Business-rule modeling, not technical diagnosis or delivery."
     },
     {
       "id": "visual-only",
       "prompt": "Adjust the page typography and spacing. Keep the existing data contract and behavior unchanged.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": false, "ui-design": true },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": false, "ui-design": true },
       "reason": "Visual-only work."
     },
     {
       "id": "bug-only-review",
       "prompt": "Check this loop for an off-by-one error. Do not assess architecture or propose structural changes.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": false, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": false, "ui-design": false },
       "reason": "A focused correctness review is not either design workflow."
     },
     {
       "id": "ui-design-only",
       "prompt": "Design the hierarchy and composition of our approval queue. Approved behavior is to compare pending requests and open one for review. Give a proposal only; do not edit code.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": false, "ui-design": true },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": false, "ui-design": true },
       "reason": "Visual composition from confirmed behavior, not technical architecture."
     },
     {
       "id": "ui-review-only",
       "prompt": "Review the rendered approval queue for hierarchy, narrow-screen usability, and visual problems. Report findings without fixing them.",
-      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "implementation-design": false, "ui-design": true },
+      "should_trigger": { "minimal-domain-modeling": false, "module-deepening": false, "software-design": false, "ui-design": true },
       "reason": "Rendered UI review does not authorize implementation."
     },
     {
       "id": "business-then-technical",
       "prompt": "Clarify whether approval tasks can transfer independently and model the business boundary. Once that rule is confirmed, design the technical ownership and persistence flow. Do not implement.",
-      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "implementation-design": true, "ui-design": false },
+      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "software-design": true, "ui-design": false },
       "reason": "Business clarification precedes the requested technical design."
     },
     {
       "id": "business-then-ui",
       "prompt": "Model the rules for claiming and transferring approval tasks, then propose the approval queue's information hierarchy based on the confirmed actions. Leave technical architecture and code unchanged.",
-      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "implementation-design": false, "ui-design": true },
+      "should_trigger": { "minimal-domain-modeling": true, "module-deepening": false, "software-design": false, "ui-design": true },
       "reason": "Business modeling followed by visual design, not a mandatory four-skill pipeline."
     }
   ],
@@ -100,7 +118,7 @@
     },
     {
       "id": "new-feature-design-only",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Design only; do not edit files. Our approved requirement is to send a receipt after a completed purchase through our sole email provider. The existing purchase flow publishes PurchaseCompleted with a purchase ID; the receipt worker can read an immutable receipt record. The provider exposes send(message, idempotencyKey), returns a message ID on acceptance, and may time out after accepting a request. It guarantees that retries using the same key do not send another message. We must retry transient failures, prevent duplicates, and expose permanent failures to operations. Tests need deterministic failure simulation. Propose the smallest technical design and verification plan, with no speculative provider switching.",
       "checks": [
         "Designs directly from the goal without running an open-ended module diagnosis.",
@@ -111,8 +129,33 @@
       ]
     },
     {
+      "id": "existing-code-redesign-approval",
+      "skill": "software-design",
+      "prompt": "Plan and implement an improvement to this supplied upload slice. No design has been approved yet. Virtual api.ts:1-4 and cli.ts:1-4 both call start(), then sendChunks(), then finish(); both catch sendChunks failure, call abort(), and rethrow the original error. Cancellation must abort once and preserve the original error. tests/upload.test.ts covers API success and chunk failure, but not CLI or cancellation. The goal is to remove caller-owned cleanup coordination while preserving these confirmed behaviors. There is no prior diagnosis. Propose the smallest target interface and migration, then observe the approval gate.",
+      "checks": [
+        "Inspects the supplied implementation, callers, and tests directly without requiring a prior domain-model document or selected diagnosis.",
+        "Cites both caller locations as evidence for duplicated lifecycle and cleanup ownership.",
+        "Designs a coherent interface that owns upload lifecycle and cleanup while preserving errors and cancellation.",
+        "Accounts for API regression coverage and missing CLI and cancellation coverage.",
+        "Presents a design and awaits explicit approval without editing files or treating the implementation request as approval.",
+        "Does not start an unrelated repository-wide diagnosis or redefine confirmed business behavior."
+      ]
+    },
+    {
+      "id": "domain-contract-not-class-blueprint",
+      "skill": "software-design",
+      "prompt": "Design only from this approved business model, without edits. Concepts: Member identifies a borrower; BookCopy identifies a lendable copy; Loan records borrowing and return. Collaboration: borrowing an available copy opens a loan for the member; returning it ends that loan. Invariants: at most one active loan per copy, maintained by the borrowing collaboration; ended loan records remain available. The system is a single process with an existing transaction-capable store. Design the smallest borrowing interface, state ownership, and verification plan. No additional eligibility policy is required.",
+      "checks": [
+        "Consumes the supplied model as confirmed business constraints rather than rerunning business discovery.",
+        "Does not require one class, service, or module per business concept.",
+        "Defines software ownership and failure semantics while preserving single-active-loan and historical-record obligations.",
+        "Addresses concurrent borrowing through the supplied transaction-capable store and identifies integration checks rather than claiming concurrency is already verified.",
+        "Does not invent borrowing limits or eligibility policies, write a new domain-model document, or edit code."
+      ]
+    },
+    {
       "id": "selected-diagnosis-handoff",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Design the delivery plan only, without edits. A supplied diagnosis selected ExpiringQuoteCheckout to centralize quote-expiry validation and charge-before-save ordering duplicated at checkout/web.ts:1-4 and checkout/job.ts:1-4. Preserve public caller results and ExpiredQuote errors. Production payment and order storage are separate systems, so save can fail after a charge. Existing web expiry tests must remain covered, and job coverage is missing. Use this selected candidate; explain assumptions, caller migration, failure handling, verification, and recovery. Payment recovery policy is not yet decided.",
       "checks": [
         "Reuses the selected candidate and supplied evidence rather than scanning for unrelated candidates.",
@@ -124,7 +167,7 @@
     },
     {
       "id": "test-coverage-migration",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Design a refactor plan only. We selected a new Checkout interface to replace CheckoutCoordinator. Existing tests cover successful checkout, expired quotes, storage failure after payment, and an internal rounding algorithm's ties-to-even invariant. New interface tests currently cover only success and expiry. Which tests can be removed, which verification is missing, and how should callers migrate without losing behavior?",
       "checks": [
         "Does not delete or recommend deleting all old tests merely because interface tests exist.",
@@ -159,7 +202,7 @@
     },
     {
       "id": "small-change-proportionality",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Design only a small change. normalizeLabel(value: string): string currently returns value.trim(); the approved requirement is to lowercase that trimmed result as well. Existing callers rely on the same string signature. Give the approach and focused verification, without changing code.",
       "checks": [
         "Provides a brief design that preserves the existing contract.",
@@ -220,17 +263,17 @@
   "disclosure": [
     {
       "id": "local-change-no-reference",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Use the small-change-proportionality execution prompt in a fresh session.",
       "checks": [
-        "Uses implementation-design/SKILL.md without loading design-principles.md, deepening.md, or alternatives.md.",
+        "Uses software-design/SKILL.md without loading design-principles.md, deepening.md, or alternatives.md.",
         "Does not load module-deepening/SKILL.md or start a diagnostic workflow.",
         "Keeps the design and verification plan proportionate to the local change."
       ]
     },
     {
       "id": "architectural-reference-only",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "Use the new-feature-design-only execution prompt in a fresh session.",
       "checks": [
         "Reads ../module-deepening/references/design-principles.md and references/deepening.md for the provider seam and failure-control decisions.",
@@ -258,7 +301,7 @@
     },
     {
       "id": "missing-shared-dependency",
-      "skill": "implementation-design",
+      "skill": "software-design",
       "prompt": "In an isolated installation fixture, make the sibling module-deepening reference directory unavailable. Request the new-feature-design-only execution prompt.",
       "checks": [
         "Reports the missing required reference path.",

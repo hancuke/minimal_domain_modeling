@@ -19,6 +19,12 @@
       "reason": "Clarifies requirements in order to build a model."
     },
     {
+      "id": "business-meaning-from-code",
+      "prompt": "Read the existing cancellation code to establish which order quantities the business allows us to cancel. Clarify the concepts and business invariants, not the software structure.",
+      "should_trigger": true,
+      "reason": "Business meaning is the decision; code is supporting evidence."
+    },
+    {
       "id": "implementation-review",
       "prompt": "Review this JavaScript helper for off-by-one errors. The business behavior and model are already approved and must not change.",
       "should_trigger": false,
@@ -72,8 +78,31 @@
       "checks": [
         "Uses a simple preference value or finite classification with only justified ownership.",
         "Does not add services, events, independent lifecycles, or diagrams without a requirement.",
-        "States the retention reason and checks a valid choice plus rejection of an unsupported choice.",
-        "Keeps the answer compact instead of filling the full document template."
+        "Places the preference retention obligation with its owning concept or invariant and validates valid and unsupported choices without adding a scenario log to the model.",
+        "Uses the three model sections briefly, without unnecessary concepts, diagrams, or process reporting."
+      ]
+    },
+    {
+      "id": "concise-system-model-document",
+      "prompt": "Return an updated library business model document in your response; do not write files. The established model has Member, BookTitle, BookCopy, and Loan. A member can have several loans; each loan belongs to one member and one copy. A copy can have at most one active loan. Loans start when an available copy is borrowed and end when it is returned. Loan records remain available after return. This task only clarifies copy availability; membership and catalog rules remain unchanged. Keep the document brief and easy to understand.",
+      "checks": [
+        "Uses only three model sections: concepts and responsibilities, collaboration and lifecycles, and business invariants.",
+        "Describes the integrated system model, preserving established concepts and rules rather than documenting only this task's availability change.",
+        "Assigns concise responsibilities and identifies who maintains the one-active-loan constraint.",
+        "Includes borrowing and return interactions and the loan lifecycle without repeating invariant definitions across sections.",
+        "Integrates retention of completed loan records into a relevant responsibility, lifecycle, or invariant.",
+        "Omits task scope, exclusions, change lists, scenario logs, implementation details, and validation status headings from the document.",
+        "Does not invent unspecified membership or catalog policies or write files."
+      ]
+    },
+    {
+      "id": "insufficient-global-context",
+      "prompt": "Produce our entire system's business model document in your response. The only available requirement is that an approval task can be transferred between reviewers. No existing global model or other system information is available.",
+      "checks": [
+        "Identifies the missing context instead of claiming a complete global system model.",
+        "Asks only consequential business questions or marks the limited model provisional.",
+        "Does not invent approval completion policies, application lifecycles, or retention obligations.",
+        "Keeps blocking questions separate from any model document and marks provisional statements at the affected concepts or rules."
       ]
     },
     {
