@@ -1,138 +1,120 @@
 ---
 name: implementation-design
-description: Design technical solutions from established requirements or a selected refactoring recommendation. Use when defining project architecture, planning a feature's implementation, or turning a chosen technical change into a delivery plan. Implement and verify only when code changes are requested.
+description: Design object models and minimal interfaces from established requirements or a selected refactoring recommendation. Use when defining project architecture, planning a feature's implementation, or turning a chosen technical change into a delivery plan. Present the design for approval before implementing requested code changes.
 ---
 
 # Implementation Design
 
-Technical design gives confirmed behavior clear responsibility, state, and
-failure semantics; adding layers is not the goal.
-
-## Principles 
-
-### 1. Make the main path obvious
-
-Make the main job of the code obvious without forcing readers through layers of mechanism.
-
-### 2. Keep rules regular and orthogonal
-
-Avoid designs where one feature subtly changes the meaning of another.
-
-### 3. Prefer small sharp tools over framework accretion
-
-Favor components that do one job cleanly and combine predictably with others.
-
-### 4. Use plain words and plain structure
-
-Choose names and structures that say exactly what they do, with as little ceremony as possible.
-
-## Behavioral Constraints
-
-- Remove options that do not serve the primary job.
-- Prefer a regular rule over a pile of special cases.
-- Do not invent framework structure when a simple tool, function, or pipeline is enough.
-- Keep naming literal and flow visible.
-- Minimize the number of concepts a reader must hold at once.
-
-
-
-## Default Execution Mode
-
-1. State the main job in one plain sentence.
-2. Delete or fold away features that distract from that job.
-3. Regularize the structure so similar things work the same way.
-4. Make data flow and naming obvious.
-5. Validate that the result is easier to explain without jargon.
-
-
+Build a coherent object model for the problem, derive its smallest useful
+interface, then plan the implementation and migration.
 
 ## Execution contract
 
+- Treat confirmed requirements, business rules, and visual design as inputs;
+  surface contradictions for clarification.
+- Reuse a supplied diagnosis and selected recommendation, checking only
+  assumptions relevant to the design. New features need no prior diagnosis;
+  route open-ended structural diagnosis to `module-deepening`.
+- **Approval gate:** Before editing code, present the design and stop for
+  explicit user approval. A code-change request alone is not design approval.
+  Implement only when both are present; seek renewed approval for material
+  changes to the approved model, interface, or behavior.
+- Keep detail proportionate to the decision. Design-only and review requests
+  end with the design.
 
-- Start from confirmed requirements or a selected diagnostic recommendation.
-  Business rules and visual design are inputs; surface contradictions rather
-  than silently changing them.
-- New features do not require a prior module-deepening diagnosis. Open-ended
-  investigation of existing structural problems belongs to `module-deepening`.
-- For design or review requests, deliver the design and stop. For code-change
-  requests, continue through implementation and verification.
-- Scale the work to the decision: a small change may need a few sentences,
-  not a module diagram or a checklist for every function.
-- Read [design-principles.md](../module-deepening/references/design-principles.md)
-  when evaluating module boundaries, dependency isolation, or consequential
-  architectural choices. A local change with no such decision uses the principles
-  above without loading references.
-  Read [deepening.md](../module-deepening/references/deepening.md) when the change
-  requires dependency substitution, seam changes, or test migration.
-  Read [alternatives.md](../module-deepening/references/alternatives.md) when
-  designs have consequential differences in caller obligations, state ownership,
-  or dependency direction, or alternatives are explicitly requested.
-- Install these references in the sibling `module-deepening` directory.
-  Reading them does not invoke diagnosis. If a required read fails, report the
-  path and keep affected judgments provisional.
+## Design principles
 
-## 1. Confirm inputs and constraints
+- **Whole before parts.** Optimize the model within the problem's scope before
+  local details. Existing code is evidence, not a template; reorganize or remove
+  objects and responsibilities when that yields a simpler model.
+- **Small interfaces, deep modules.** Minimize the concepts, operations, and
+  constraints callers must understand. Count that knowledge, not just methods;
+  generic entry points and parameter bags can merely move complexity to callers.
+- **Regular rules, clear flow.** Keep rules orthogonal, names literal, and data
+  flow visible so readers can follow the main path.
+- **Only necessary structure.** Prefer simple functions, objects, or pipelines
+  over speculative layers and options. Whole-model thinking does not require
+  a whole-codebase rewrite.
 
-Identify desired behavior, acceptance criteria, scope, and compatibility needs.
-Inspect relevant code, conventions, and tests.
+## Workflow
 
-When a diagnosis is supplied, reuse its evidence and selected candidate. Check
-the assumptions that affect the solution rather than rerunning the whole scan.
-Ask when an unresolved rule or architectural choice would materially change the
-design. If clarification is unavailable, label the affected design provisional.
+### 1. Confirm inputs and constraints
 
-**Exit:** Required behavior and significant constraints are stated; consequential
-unknowns are resolved or explicitly limit the design.
+State the main job in one sentence. Identify required scenarios, acceptance
+criteria, scope, and compatibility needs. Inspect relevant code, terminology,
+conventions, and tests; distinguish business constraints from historical
+implementation choices.
 
-## 2. Form the technical solution
+Clarify unknowns that would materially change the model. If clarification is
+unavailable, mark the affected design provisional.
 
-Define responsibilities and interactions at the appropriate scale: project,
-feature, module, or method. Specify the interface, dependency direction, relevant
-state transitions, data flows, side effects, and failure handling.
+**Exit:** The problem and significant constraints are explicit; unresolved
+questions visibly limit the design.
 
-Apply the principles to the solution. Preserve existing contracts unless changes
-are authorized. Use project terminology and existing places for durable decisions.
+### 2. Build the target model and derive interfaces
 
-**Exit:** The solution explains how the required scenarios work and who owns the
-important decisions, state, and effects.
+Use known requirements and domain knowledge to define objects, responsibilities,
+relationships, invariants, and state transitions. Compare coherent models before
+settling local implementation details; existing object divisions need not survive.
 
-## 3. Challenge the solution
+Derive the minimum interface needed by callers: operations, inputs, results,
+usage constraints, and failure semantics. Assign ownership of state and effects,
+and make dependency direction clear. Use project terminology.
 
-Trace actual caller and change scenarios. Challenge added concepts, caller
-obligations, ownership, and compatibility using the principles and applicable
-references.
+Treat compatibility as a migration obligation, not a limit on exploring better
+abstractions. Identify proposed contract changes for explicit approval.
 
-Use the optional references under their reading conditions. Identify tests,
-types, runtime checks, and integration checks that protect important behavior.
-For refactors, map existing coverage using the test-migration reference.
+**Exit:** The target model and interfaces explain the required scenarios and
+who owns their rules, state, and effects.
 
-**Exit:** Significant trade-offs and verification needs are explicit; added
-complexity has a current justification and important compatibility risks are
-accounted for.
+### 3. Challenge the solution and plan migration
 
-## 4. Deliver the design
+Trace normal, failure, and change scenarios through the proposed interfaces.
+Apply the principles and read the [references](#references) when their conditions
+apply. Check whether the model removes complexity or merely shifts it to callers.
 
-Present the approach and why it fits, the relevant responsibilities and
-interactions, verification strategy, and only significant risks or alternatives.
-Use a diagram or code sketch when it clarifies the decision.
+Then compare the target model with the current implementation. Plan caller
+migration, compatibility checks, and recovery proportionate to deployment and
+data risk. Identify tests, types, and integration checks that protect behavior;
+map existing coverage when refactoring.
 
-For refactors, include caller migration, compatibility checks, and a recovery
-or rollback approach proportionate to deployment and data risk. State whether
-the design is confirmed or provisional.
+**Exit:** Added complexity is justified, significant trade-offs are explicit,
+and migration and verification cover important risks.
 
-**Exit:** The user can understand the proposed solution and how to validate and
-safely introduce it. Design-only and review requests finish here.
+### 4. Present the design and await approval
 
-## 5. Implement and verify when requested
+Present the target model, proposed interfaces with representative usage,
+important differences from the current design, and the migration and verification
+plan. Include signatures, a diagram, or code sketches where they clarify the
+decision; explain only significant trade-offs.
 
-Proceed only for a code-change request and after consequential uncertainties
-are resolved. Make the smallest coherent change, follow project conventions,
-and keep dependent callers consistent.
+State unresolved assumptions separately from approval status. For implementation
+requests, ask for approval and stop under the approval gate.
 
-Run checks covering the changed behavior and relevant integration risks using
-existing tooling. If implementation invalidates an assumption, revisit the
-affected design rather than hiding the mismatch behind a workaround.
+**Exit:** The design is submitted for review. Submission completes the design
+phase; it does not authorize implementation.
 
-**Exit:** The requested change is implemented and appropriate checks have run,
-or blockers and unverified behavior are stated explicitly. A completed design
-is not evidence of a verified implementation.
+### 5. Implement and verify after approval
+
+Proceed only when the approval gate is satisfied and consequential uncertainties
+are resolved. Make the smallest coherent change that realizes the approved
+model, follow project conventions, and keep dependent callers consistent.
+
+Run existing checks covering changed behavior and relevant integration risks.
+If implementation invalidates a design assumption, revisit the affected design.
+
+**Exit:** The approved change is implemented and checks pass, or blockers and
+unverified behavior are explicit.
+
+## References
+
+Read sibling references only under these conditions; reading is not diagnosis:
+
+| Condition | Reference |
+| --- | --- |
+| Module boundaries, dependency isolation, or consequential architectural choices | [design-principles.md](../module-deepening/references/design-principles.md) |
+| Dependency substitution, seam changes, or test migration | [deepening.md](../module-deepening/references/deepening.md) |
+| Alternatives requested, or designs differ consequentially in caller obligations, state ownership, or dependency direction | [alternatives.md](../module-deepening/references/alternatives.md) |
+
+If a required reference cannot be read, report its path and mark affected
+judgments provisional.
