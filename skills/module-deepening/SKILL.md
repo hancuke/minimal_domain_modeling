@@ -5,8 +5,8 @@ description: Independently diagnose module-deepening opportunities in existing c
 
 # Module Deepening
 
-Deeper modules reduce the knowledge callers need for useful behavior;
-implementation size does not measure that benefit.
+Deeper modules reduce the knowledge callers need for useful behavior.
+Implementation size does not measure that benefit.
 
 ## Principles
 
@@ -15,15 +15,15 @@ implementation size does not measure that benefit.
 Compare what callers must understand about rules, ordering, state, and failures
 before and after a proposed change.
 
-- **Good:** A module owns transaction coordination; callers express business intent.
+- **Good:** A module owns transaction coordination. Callers express business intent.
 - **Avoid:** Wrap five calls in one method while callers still manage their order
   and recover partial failures.
 
 ### Concentrate shared knowledge
 
-Trace repeated decisions to a shared owner; similar syntax alone is not evidence.
+Trace repeated decisions to a shared owner. Similar syntax alone is not evidence.
 
-- **Good:** Several callers enforce the same eligibility rule; its owner exposes
+- **Good:** Several callers enforce the same eligibility rule. Its owner exposes
   an operation that enforces it consistently.
 - **Avoid:** Combine similar-looking validation with different business meanings.
 
@@ -37,34 +37,42 @@ a boundary.
 
 ### Earn the cost of change
 
-Rank reduced caller burden against broader responsibility, coupling, compatibility
-risk, and migration cost. Retaining the current structure is a valid outcome.
+Compare reduced caller knowledge with broader responsibility, coupling,
+compatibility risk, and migration cost. Retaining the current structure is a valid outcome.
 
-- **Good:** Centralize evidenced coordination while preserving failure semantics
-  and identifying equivalent behavioral coverage.
+- **Good:** Centralize coordination supported by evidence. Preserve failure semantics
+  and identify equivalent behavioral coverage.
 - **Avoid:** Add an abstraction for hypothetical reuse, or remove internal tests
   without checking which important invariants they protect.
 
 ## Execution contract
 
-Diagnose existing code and output recommendations, not code changes. New-feature
-design and goal-driven redesign belong to `software-design`. When implementation
-is also requested, resolve consequential candidate choices and hand off evidence,
-constraints, interface direction, and verification needs to that skill.
+Diagnose existing code. Output recommendations, not code changes.
+New-feature design and goal-driven redesign belong to `software-design`.
+When implementation is also requested, resolve important candidate choices.
+Hand off evidence, constraints, interface direction, and verification needs to that skill.
 
 Bound the inspected area and compatibility constraints. For codebase-wide requests,
-scan entry points, tests, and dependencies to choose a concrete area; expand only
-when evidence leads elsewhere. Inspect implementations, representative callers,
-and tests to establish decision, state, effect, and failure ownership. Preserve
-project terminology; ask about unknowns that could invalidate the recommendation.
+scan entry points, tests, and dependencies to choose a concrete area.
+Expand only when evidence leads elsewhere.
+Inspect implementations, representative callers, and tests.
+Identify who owns decisions, state, effects, and failures.
+Preserve project terminology. Ask about unknowns that could invalidate the recommendation.
 
-Rank findings by benefit, risk, and change cost. Each finding needs code locations,
-a concrete caller or change scenario, a deepen-or-retain recommendation, changed
-caller obligations and ownership, major costs, and verification needs. For a
-proposed change, sketch a representative caller interaction. State inspection
-limits and distinguish evidence from assumptions; explain important exclusions.
-If code or a required reference is missing, report it and keep affected claims
-provisional.
+## Recommendations
+
+Rank findings by benefit, risk, and change cost. For each finding, include:
+
+- Code locations and a concrete caller or change scenario.
+- A deepen-or-retain recommendation.
+- Changes to caller obligations and ownership, including conditions, outcomes,
+  and failure semantics.
+- Major costs and verification needs.
+
+For a proposed change, sketch a representative caller interaction.
+State inspection limits and important exclusions. Distinguish evidence from assumptions.
+If code or a required reference is missing, report it.
+Keep affected claims provisional.
 
 ## References
 

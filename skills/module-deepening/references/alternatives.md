@@ -10,13 +10,14 @@ and dependency constraints for every design. Mark unresolved requirements as
 assumptions or questions.
 
 - **Good:** Compare caller-owned and module-owned coordination for the same workflow.
-- **Avoid:** Make one option look better by assuming requirements the others lack.
+- **Avoid:** Favor one option by assuming different requirements for it.
 
 ## Vary a consequential decision
 
-Usually two credible designs are enough; include the current design when viable.
-For each, sketch a caller interaction and identify caller obligations, hidden
-knowledge, state and effect ownership, and significant failure behavior.
+Usually two credible designs are enough. Include the current design when viable.
+For each design, sketch a caller interaction.
+Identify caller obligations, hidden knowledge, state and effect ownership,
+and significant failure behavior.
 
 - **Good:** Contrast caller-owned state with module-owned state and explain how
   recovery changes.
@@ -25,10 +26,10 @@ knowledge, state and effect ownership, and significant failure behavior.
 ## Make the trade-off explicit
 
 Compare caller knowledge, locality, dependency and failure isolation, compatibility,
-and migration cost. Recommend an option with its important disadvantage, or name
-the unresolved decision when none dominates.
+and migration cost. Recommend an option and state its important disadvantage.
+If no option is clearly better, identify the unresolved decision.
 
 - **Good:** Prefer fewer caller obligations while acknowledging added module
   responsibility and migration cost.
-- **Avoid:** Justify flexibility by hypothetical reuse or combine options into a
-  hybrid with incoherent ownership.
+- **Avoid:** Justify flexibility by hypothetical reuse.
+  Do not combine options into a design with unclear ownership.

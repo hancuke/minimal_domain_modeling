@@ -6,12 +6,15 @@
 
 | Skill | 适用任务 | 职责边界 |
 |---|---|---|
+| `communication-policy` | 组织、改写或审阅回答、设计、模型与研究报告 | 根据读者目标和理解依赖组织信息；不替代专业判断、交付要求或执行门槛 |
 | `minimal-domain-modeling` | 明确业务含义，建立领域模型，或评估、简化已有业务边界 | 输出简洁的系统级业务模型：概念与职责、协作与生命周期、业务不变量；不负责软件结构或实现 |
 | `module-deepening` | 独立诊断现有代码的重复知识、调用者负担、修改牵连和深化机会 | 提供代码证据、候选优先级和接口方向；允许结论“不重构”，不默认实施 |
 | `software-design` | 根据领域模型、明确需求，或现有实现与优化目标设计软件 | 必要时诊断现状，设计代码对象、模块、接口和迁移验证方案；仅在要求代码变更且方案获批后实施 |
 | `ui-design` | 设计界面、评审渲染结果，或实现页面、组件和样式 | 保留业务行为和数据契约；设计与评审不修改代码，实现需检查渲染及相关交互 |
 
 按任务选择所需 Skill，不要求每次依次运行全部。需要决定业务含义时进入领域建模，代码也可作为业务证据；已有明确行为的技术改动直接进入 `software-design`，无需先生成领域模型文档或运行深化诊断。混合任务先确认受影响的业务规则，再设计实现。
+
+`communication-policy` 横向约束沟通方式，任务 Skill 定义专业内容、流程和验证要求。它不强制统一大纲，也不是其他 Skill 独立安装的必需依赖；持续启用由目标 Agent 的常驻指令负责，见下方启用说明。
 
 领域模型是业务语义契约，不是类或模块蓝图。`software-design` 可以重新划分代码边界，但不能擅自改变已确认的业务含义；遇到歧义时只交回受影响的业务问题，不默认重做整个领域模型。
 
@@ -24,6 +27,8 @@
 minimal_domain_modeling/
 ├── README.md
 ├── skills/
+│   ├── communication-policy/
+│   │   └── SKILL.md
 │   ├── minimal-domain-modeling/
 │   │   ├── SKILL.md
 │   │   ├── references/
@@ -47,9 +52,9 @@ minimal_domain_modeling/
 
 `skills/` 下每个子目录定义一个 Skill。Skill 可以协作或共享参考材料；存在必需依赖时，应说明依赖对象与读取条件，安装时确保所需 Skill 和参考文件可用。根目录的 README 和评估场景面向维护者，不属于运行时 Skill，也不需要加载到 Agent 上下文。
 
-`minimal-domain-modeling` 正文负责分析、澄清和场景验证；保留要求的专项判断放在 reference 中；template 统一为概念与职责、协作与生命周期、业务不变量三部分。文档描述全局业务结构，不包含本次任务范围、变更清单或验证过程；已有模型原位更新，每条事实只写一次。信息保留义务融入相关职责、生命周期或不变量，未知事实就地标注，不补造全局规则。其文件引用均相对 Skill 目录解析，不依赖此仓库的绝对路径、脚本或网络。
+`minimal-domain-modeling` 正文负责分析、澄清和场景验证；保留要求的专项判断放在 reference 中；template 统一为问题与目标、概念与职责、生命周期与协作、业务不变量四部分。文档描述选定业务范围内的完整模型，不包含本次任务范围、变更清单或验证过程；已有模型原位更新，每条事实只写一次。信息保留义务融入相关职责、生命周期或不变量，未知事实就地标注，不补造全局规则。其文件引用均相对 Skill 目录解析，不依赖此仓库的绝对路径、脚本或网络。
 
-各正文保留任务特有原则、示例和流程。共享术语与架构约束在 `module-deepening/references/design-principles.md`；依赖语义、seam 放置和测试迁移细则在 `deepening.md`；方案比较方法在 `alternatives.md`。
+通用表达规则仅维护在 `communication-policy/SKILL.md`，不再单独维护 `Agent Writing Standard.md`。各任务正文保留专业原则、示例、流程和交付要求，不强制引用 Communication Policy。共享术语与架构约束在 `module-deepening/references/design-principles.md`；依赖语义、seam 放置和测试迁移细则在 `deepening.md`；方案比较方法在 `alternatives.md`。
 
 `module-deepening` 评估候选前读取共享参考。`software-design` 仅在模块边界、依赖隔离或重要架构取舍时读取它；简单局部改动不加载参考。依赖替代、seam 调整或测试迁移时读取 `deepening.md`；有实质性方案差异或明确要求替代方案时读取 `alternatives.md`。读取参考不启动独立诊断流程。
 
@@ -76,7 +81,7 @@ npx skills add hancuke/minimal_domain_modeling \
   --global
 ```
 
-将 `--skill` 的值替换为 `module-deepening` 或 `ui-design` 可安装其他 Skill。安装 `software-design` 时也安装其参考依赖：
+将 `--skill` 的值替换为 `communication-policy`、`module-deepening` 或 `ui-design` 可安装其他 Skill。安装 `software-design` 时也安装其参考依赖：
 
 ```sh
 npx skills add hancuke/minimal_domain_modeling --skill module-deepening
@@ -90,6 +95,42 @@ npx skills add hancuke/minimal_domain_modeling --skill software-design
 GitHub 安装读取已推送的文件；私有仓库需要目标机器配置有访问权限的 Git 凭据。更新已有安装前先比较版本与本地修改，避免覆盖。
 
 安装方式参考 [Skills CLI 文档](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)。
+
+### 安装后启用 Communication Policy
+
+在目标项目根目录执行项目级安装：
+
+```sh
+npx skills add hancuke/minimal_domain_modeling \
+  --skill communication-policy
+```
+
+个人级安装可供多个项目使用：
+
+```sh
+npx skills add hancuke/minimal_domain_modeling \
+  --skill communication-policy --global
+```
+
+安装时选择目标 Agent。安装不等于启用，全局安装也不保证每次任务自动加载。偶尔使用时，按目标 Agent 的调用方式加载；需要持续生效时，将以下示例合并到目标项目的 `AGENTS.md`，前提是该 Agent 支持并会读取它：
+
+```markdown
+## Communication Policy
+
+Before composing user-facing responses or documents, load and apply the
+installed communication-policy skill if it is not already loaded in this
+session. Reload it if its content changes.
+
+Apply it alongside task-specific skills. Preserve required content, formats,
+verification requirements, and approval gates. Do not impose one universal outline.
+
+If the skill is unavailable, report the missing dependency and do not claim
+that the policy has been applied.
+```
+
+此示例仅用于安装后的启用配置，本仓库不创建实际的 `AGENTS.md`。安装命令不会替你写入上述常驻指令。其他 Agent 应将入口放在其支持的常驻指令文件中，并根据实际安装位置配置可读取的 Skill 路径；个人级持续启用也需要相应的个人级指令。不要依赖非标准的 `alwaysApply` 字段承诺跨 Agent 生效。
+
+配置后在新会话中确认 Agent 能找到并读取 Policy，同时仍遵守任务 Skill 的交付要求；不能仅凭安装成功就认为规范已经生效。
 
 ### 手动复制
 

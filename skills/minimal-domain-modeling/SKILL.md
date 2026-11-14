@@ -1,181 +1,156 @@
 ---
 name: minimal-domain-modeling
-description: Define business meaning through the fewest sufficient concepts, their responsibilities, collaboration, lifecycles, and invariants. Use when clarifying business requirements or reviewing business boundaries, including when existing code supplies evidence. Produce a concise system-level business model; software structure and implementation belong to software-design.
+description: Model a business problem through the fewest sufficient concepts, responsibilities, lifecycles, collaborations, and invariants. Use when clarifying business requirements or reviewing business boundaries, including when existing code supplies evidence. Support whole-system and local models; software structure and implementation belong to software-design.
 ---
 
 # Minimal Domain Modeling
 
-Preserve the required business meaning with the fewest justified concepts.
-Optimize for understandable rules and boundaries, not object count.
+## Goal and boundaries
+
+Build an understandable business problem model. Preserve required meaning with
+the fewest justified concepts. Favor clear rules and boundaries over concept count.
+
+Support whole-system and local models. Do not expand a local problem into the
+entire system.
+
+Use this skill when business meaning needs a decision. Business vocabulary alone
+does not make a technical change a modeling task. Leave architecture and
+implementation under established business rules to `software-design`.
+When software design is requested, hand off the model as its business contract.
+Confirmed business meaning remains authoritative.
 
 ## Principles
 
-- **Minimal sufficiency:** Merge or remove a concept only when required facts,
-  rules, and boundaries remain expressible.
+- **Minimal sufficiency:** Merge or remove a concept only if the model can still
+  express all required facts, rules, and boundaries.
 - **Independent change:** Retain distinctions justified by independent identity,
   rules, or lifecycles, not hypothetical reuse.
-- **Rule ownership:** Put a decision with the concept enforcing its constraint,
-  not merely the concept holding related data. Define each rule once.
+- **Rule ownership:** Assign a decision to the concept that enforces its constraint,
+  not one that only describes related facts. Define each fact or rule once.
+  Reference that definition elsewhere.
 - **Bounded uncertainty:** Unconfirmed business rules support provisional choices,
-  not a confirmed model.
+  not a confirmed model. Distinguish confirmed requirements, provisional
+  assumptions, and open questions.
+- **Evidence and clarification:** Use the user's business vocabulary. Resolve
+  ambiguous terms before using them. Read supplied requirements and relevant
+  models or code. State contradictions and ask which behavior is intended.
+- **Local before collaborative:** Prefer explaining each important concept's
+  responsibilities and lifecycle before its collaboration with other concepts.
+  This is a default order, not a prerequisite for discussing collaboration.
 
-**Good:** Keep an approval task when claiming, transfer, and expiry create its own
-facts and lifecycle. **Avoid:** Remove it because a pending-task list is calculable.
+**Good:** Keep an approval task when claiming, transfer, and expiry give it its own
+facts and lifecycle. **Avoid:** Remove it because pending tasks can be calculated.
 
 **Good:** Model cancellable quantities for partially fulfilled orders.
-**Avoid:** Replace that distinction with one order-level cancelled flag.
+**Avoid:** Treat the entire order as cancelled when only some quantities are cancelled.
 
-## Execution contract
+## Modeling process
 
-- Model the business; leave implementation and architectural choices to a separate task.
-- Choose this skill when business meaning needs a decision. A technical change
-  under established business rules belongs to `software-design`; business vocabulary
-  in a request does not by itself make it a modeling task.
-- Use the user's business vocabulary. Resolve overloaded terms before depending on them.
-- Label confirmed requirements, provisional assumptions, and open questions.
-- Read supplied requirements and relevant existing models or code when available.
-  Surface contradictions between them; ask which behavior is intended.
-- For a new model, follow the stages below. For a focused review, inspect the
-  affected stages and their dependencies rather than rebuilding the entire model.
-- Separate the modeling process from its document. Task framing and scenario
-  checks guide the work; the document describes the system's business structure.
-- Revisit earlier stages when scenarios, capabilities, or lifecycles expose a
-  missing distinction. The stage order is a starting path, not a one-way gate.
+For a new model, follow all six stages. For a focused review, inspect affected
+stages and their dependencies. Do not rebuild the entire model.
+Revisit earlier stages as new business distinctions emerge.
 
-## 1. Frame the problem
+### 1. Frame the problem
 
-State the current situation, desired outcome, core business problem, and scope.
-Separate a proposed implementation from the need it serves, while preserving
-external constraints that actually affect the business.
-Keep this task framing out of the system model document.
+Identify who faces the problem. State the current situation, desired outcome,
+and success criteria. Define the business scope, external dependencies, and
+constraints. Separate a proposed solution from the need it serves.
 
 Identify unknowns before choosing concepts. Ask for clarification when an unknown
-could change identity, a key rule, lifecycle, ownership, or retention. Ask only
-the questions needed to resolve the current blocker.
+could change identity, a key rule, lifecycle, ownership, or retention obligations.
+Ask only the questions needed to resolve the current blocker.
 
 If clarification is unavailable, present alternatives or a provisional model
-with explicit assumptions and affected decisions.
+with explicit assumptions. Identify which decisions depend on those assumptions.
 
-**Exit:** The scope and intended outcome are stated; consequential unknowns are
-resolved or explicitly bound the provisional work.
+**Exit:** The problem, scope, and outcome are clear. Key unknowns are resolved
+or explicitly limit the provisional model.
 
-## 2. Discover and reduce concepts
+### 2. Discover and reduce concepts
 
-For each candidate, establish its business meaning, essential facts, need for
-identity, and relationships. Specify cardinality and ownership where they affect
-rules or lifecycle; distinguish ownership from a simple association.
+For each candidate, identify its meaning, essential facts, relationships, and need
+for individual identification. State relationship limits and business ownership
+where they affect rules or lifecycles. Do not treat every association as ownership.
 
-Use entities, value objects, and finite classifications when helpful. Business
-events, rules, policies, and processes are also valid concepts when required by
-the problem. These are analytical categories, not a mandate to create classes.
+Business events, rules, policies, and processes can also be concepts when they
+have a necessary business meaning or responsibility.
 
-Apply minimal sufficiency and independent change to each candidate. Name the
-required meaning it protects; explain consequential merges and exclusions.
+Apply minimal sufficiency and independent change. State why each concept is needed.
+Explain merges and exclusions that affect business meaning.
 
-**Exit:** Each retained concept has a business reason to exist; no confirmed
-requirement has been removed in the name of simplicity.
+**Exit:** Every retained concept is justified. Simplification loses no confirmed
+in-scope requirement.
 
-## 3. Assign capabilities and rules
+### 3. Assign responsibilities and rules
 
-For important concepts, describe their responsibilities, supported business
-operations, and invariants. For consequential operations, identify the conditions
-for acceptance, resulting facts or state changes, and business rejection cases.
+Assign responsibilities, business operations, and invariants to important concepts.
+For consequential operations, state acceptance conditions, rejection cases,
+and resulting facts or state changes.
 
-An invariant is a business constraint that every valid state or transition must
-preserve. Distinguish it from a workflow step or implementation technique.
+An invariant is a business constraint that all valid states or transitions must
+preserve. It is not a workflow step.
 
-Apply rule ownership; refer to the authoritative rule from interactions and
-scenarios.
+For a decision across concepts, name the business rule, policy, or process.
+Identify its participants and who is responsible for the decision.
 
-For a decision spanning several concepts, describe a business-named rule, policy,
-or process and its participants. A collaboration need does not by itself require
-a Service, Repository, Controller, or technical layer.
+**Exit:** Important rules have clear owners or collaboration boundaries.
+Operations have clear business effects.
 
-**Exit:** Important rules have explicit owners or collaboration boundaries, and
-operations have understandable business effects.
+### 4. Explain lifecycles and collaboration
 
-## 4. Explain collaboration and lifecycles
+For concepts with meaningful state changes, describe creation, relevant states,
+transition triggers and conditions, rejected transitions, and completion or
+termination. Keep independent lifecycles separate. Skip lifecycle descriptions
+for concepts without meaningful state changes.
 
-Use the relationships from stage 2 to describe essential business interactions:
-the initiating action, participating concepts, decision points, and resulting
-facts or state changes. Add only relationships newly revealed by this work.
+Use the relationships from stage 2 to explain essential collaboration.
+Identify the initiating action, participants, decisions, and resulting facts
+or state changes. Add newly discovered relationships. Revise lifecycles when
+collaboration reveals missing conditions.
 
-For stateful concepts, identify creation, relevant states, transition triggers
-and conditions, rejected transitions, and completion or termination. Keep related
-but independent lifecycles separate.
+**Exit:** Essential operations are clear from start to finish.
+Lifecycle restrictions agree with responsibilities and invariants.
 
-Use concise text by default. Use a decision table for branching rules, a transition
-table for state changes, or a diagram when it resolves a specific ambiguity.
-Skip lifecycle artifacts for concepts without meaningful state transitions.
+### 5. Identify business facts and retention obligations
 
-**Exit:** Essential operations can be followed end to end, and lifecycle
-restrictions agree with the capabilities and invariants.
+When the task introduces or changes facts, history, or commitments that must
+remain known, read
+[Business facts and retention obligations](references/information-and-retention.md).
+For a focused review with unchanged retention obligations, mention this in the
+response only when relevant. Do not add a task-local note to the model.
 
-## 5. Classify information and retention
+**Exit:** Retention obligations for required facts, decisions, commitments,
+and history are justified or marked as open questions.
 
-When the task introduces or changes business information, historical records,
-or recovery expectations, read [Information and retention](references/information-and-retention.md).
-For a focused review that does not affect them, state that retention is unchanged
-in the review response when relevant, rather than adding a task-local note to
-the system model or inventing a persistence design.
+### 6. Validate against business scenarios
 
-**Exit:** Affected information has a justified retention decision or an explicit
-open question. Reconstructibility and retention are evaluated separately.
+Walk through a representative success scenario and key exception paths from
+the requirements. For a focused review, exercise the changed boundary.
 
-## 6. Validate against business scenarios
-
-Walk through a representative successful scenario and the consequential exception
-paths supported by the requirements. For a focused review, choose scenarios that
-exercise the changed boundary.
-
-For each scenario, trace the input or action, applicable rule, participating
-concepts, accepted or rejected transitions, and resulting business facts.
-When retention is in scope, check what remains recoverable after restart.
+Trace each scenario's input or action, rules, participants, accepted or rejected
+transitions, and resulting facts. When retention is in scope, check that history
+remains explainable and commitments remain known after interruption or completion.
 
 Check every confirmed in-scope requirement against a rule, fact, or scenario.
-Use the principles to check concept necessity, rule ownership, and assumptions.
+Check concept necessity, rule ownership, and assumptions against the principles.
 
-If a scenario fails, revise the relevant earlier stages and run it again.
-Treat proposed edge-case behavior as a question until the business confirms it.
+If a scenario fails, revise the model and run the scenario again.
+Treat proposed edge-case behavior as unconfirmed until the business confirms it.
+Scenario checks are required work, not extra model sections.
 
-**Exit:** The model supports the confirmed scenarios without contradictions;
-unresolved behavior is visibly excluded from any completion claim.
+**Exit:** Confirmed scenarios have no contradictions. Claim validation only for
+behavior with passed scenario checks and confirmed key business decisions.
+Explicitly exclude unresolved behavior.
 
-## Deliver the model
+## Delivery requirements
 
-Read [Model template](assets/model-template.md) when producing a model. Use its
-three sections for both brief and larger models:
-
-1. **Concepts and responsibilities:** The fewest sufficient business concepts,
-   each with a short meaning and responsibility. Include identity, essential facts,
-   ownership, and cardinality only where they explain rules or lifecycles.
-2. **Collaboration and lifecycles:** Essential interactions and meaningful state
-   transitions, including their triggers, conditions, and outcomes. Keep independent
-   lifecycles distinct.
-3. **Business invariants:** Constraints that must hold, each with its responsible
-   concept or business collaboration.
-
-Define each fact or rule once and reference it elsewhere. Fold necessary retention
-obligations into the relevant responsibility, lifecycle, or invariant. Prefer short
-sentences and compact tables; use diagrams only to resolve specific ambiguity.
-Let complexity determine length, not a checklist of optional fields.
-
-Describe the integrated system model, not an incremental change proposal. Update
-an existing model in place, preserving unaffected business meaning. Keep task
-scope, exclusions, change lists, scenario logs, validation status headings, and
-implementation plans out of the document. Scenario checks remain mandatory work,
-not extra document sections.
-
-Use the available system context; if it is insufficient for a global model,
-report the missing context separately rather than inventing the rest. Mark
-provisional statements next to the affected concept or rule and raise blocking
-questions in the response. Claim validation only for behavior whose scenario
-checks passed and whose consequential business decisions are confirmed.
-
-For a focused review without a model-document request, give compact findings
-rather than reproducing the system model. Write a file only when requested or
-required by the project's established workflow.
-
-The model is a business-semantic contract for `software-design`, not a class or
-module blueprint. Hand off when software design is requested; that skill may map
-business concepts to different code boundaries while preserving their meaning.
+- Read and use the four-section [Model template](assets/model-template.md).
+  Let business complexity determine length, not optional fields.
+- Describe an integrated model of the selected business scope, not a change proposal.
+  Update existing models in place. Preserve unaffected business meaning.
+- Include business boundaries. Exclude task-specific scope and exclusions, change
+  lists, scenario logs, validation status headings, and implementation plans.
+- Mark assumptions next to the affected concept or rule. Report missing context
+  and blocking questions separately in the response. Do not invent missing context.
+- For a focused review without a model-document request, give compact findings.
+  Write files only when requested or required by the project's workflow.
