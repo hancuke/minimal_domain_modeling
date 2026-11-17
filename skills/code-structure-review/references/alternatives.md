@@ -3,6 +3,11 @@
 Compare designs against the shared vocabulary in
 [design-principles.md](design-principles.md).
 
+In `code-structure-review`, compare improvement directions only as far as needed
+to judge value and risk. Representative interactions may clarify the trade-off;
+do not finalize interfaces or migration plans. In `software-design`, develop
+the target structure, contracts, and migration and verification plan.
+
 ## Hold constraints constant
 
 Use the same required behavior, caller scenarios, compatibility requirements,

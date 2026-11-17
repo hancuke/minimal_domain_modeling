@@ -21,6 +21,9 @@ Use these terms to clarify analysis, not to require renaming.
 - **Locality:** concentration of knowledge, changes, and verification in the
   places that own them.
 
+Depth is one evaluation axis, not a goal that overrides cohesion, independent
+change, dependency isolation, compatibility, or migration cost.
+
 ## Assess the complete interface
 
 Evaluate complete caller scenarios, not just entry-point counts. A single
@@ -51,5 +54,5 @@ Place durable knowledge near its owner. Use existing documentation conventions.
 Do not create documents only to repeat information that is clear in the code.
 
 For test surfaces and coverage migration, use
-[deepening.md](deepening.md#preserve-behavior-and-migrate-verification) when those
+[dependencies-and-verification.md](dependencies-and-verification.md#preserve-behavior-and-migrate-verification) when those
 decisions are in scope.

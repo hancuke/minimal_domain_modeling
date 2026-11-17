@@ -1,4 +1,4 @@
-# Dependencies, Seams, and Safe Deepening
+# Dependencies, Seams, and Verification
 
 Use the vocabulary in [design-principles.md](design-principles.md).
 Use dependency categories to assess feasibility and verification.

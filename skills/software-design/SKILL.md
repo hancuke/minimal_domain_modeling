@@ -1,6 +1,6 @@
 ---
 name: software-design
-description: Design software structure and minimal interfaces from a domain model, confirmed requirements, or existing code and an improvement goal. Use for feature architecture, redesigning an implementation, or designing a selected refactor. Diagnose existing code as needed for the target design. Standalone module-boundary diagnosis belongs to module-deepening. Present the design for approval before handing requested code changes to implement.
+description: Design software structure and minimal interfaces from a domain model, confirmed requirements, or existing code and an improvement goal. Use for feature architecture, redesigning an implementation, or designing a selected refactor. Diagnose existing code as needed for the target design. Standalone code-structure assessment belongs to code-structure-review. Present the design for approval before handing requested code changes to implement.
 ---
 
 # Software Design
@@ -23,8 +23,8 @@ Hand off implementation only when requested and approved.
   Do not let unrelated business questions block established behavior.
 - Reuse a supplied diagnosis and selected recommendation.
   Check assumptions relevant to the design. Otherwise inspect the relevant existing code.
-  Use `module-deepening` for standalone module-boundary diagnosis without a request
-  for a target design or implementation.
+  Use `code-structure-review` for standalone assessment of existing code structure.
+  A target-design request does not require a separate review phase or skill invocation.
 - **Approval gate:** Before editing code, present the design and stop for
   explicit user approval. A code-change request alone is not design approval.
   Implement only when both are present. Seek renewed approval for material
@@ -84,6 +84,11 @@ Preserve confirmed business invariants and lifecycles.
 Compare coherent structures before deciding local details.
 Existing code boundaries can change. A business concept does not require its own class.
 
+Own the target responsibilities, contracts, and dependency direction.
+Leave concrete file and function placement to `implement` within those decisions.
+Show a file layout only when physical placement clarifies a consequential boundary;
+do not require a complete file tree for every design.
+
 Make the owners of business operations, business rules, technical I/O, and format
 handling explicit where relevant. Show which capability hides technical sequences
 from business callers. Distinguish format validation from business decisions.
@@ -137,7 +142,8 @@ direction, state and effect ownership, failure semantics, compatibility constrai
 and migration and verification needs. Reuse the approved design; do not create
 a duplicate handoff document.
 
-`implement` owns code placement, implementation, and behavior and boundary checks.
+`implement` owns concrete file and function placement within the approved
+responsibilities and contracts, implementation, and behavior and boundary checks.
 If implementation invalidates a design assumption, revisit only the affected
 design and seek renewed approval for material changes.
 
@@ -152,9 +158,9 @@ Read sibling references only under these conditions. Reading alone is not diagno
 
 | Condition | Reference |
 | --- | --- |
-| Module boundaries, dependency isolation, or consequential architectural choices | [design-principles.md](../module-deepening/references/design-principles.md) |
-| Dependency substitution, seam changes, or test migration | [deepening.md](../module-deepening/references/deepening.md) |
-| Alternatives requested, or designs differ consequentially in caller obligations, state ownership, or dependency direction | [alternatives.md](../module-deepening/references/alternatives.md) |
+| Module boundaries, dependency isolation, or consequential architectural choices | [design-principles.md](../code-structure-review/references/design-principles.md) |
+| Dependency substitution, seam changes, or test migration | [dependencies-and-verification.md](../code-structure-review/references/dependencies-and-verification.md) |
+| Alternatives requested, or designs differ consequentially in caller obligations, state ownership, or dependency direction | [alternatives.md](../code-structure-review/references/alternatives.md) |
 
 If a required reference cannot be read, report its path.
 Mark affected judgments as provisional.

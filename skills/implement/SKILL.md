@@ -2,115 +2,72 @@
 name: implement
 description: Implement an approved software design or a bounded code change whose structure and behavior are already established. Use for coding, fixing, and refactoring with clear contracts. Keep business operations separate from technical mechanisms, place functions by responsibility, and verify behavior and module boundaries. Return material design decisions to software-design.
 ---
+# Implement — Code Structure & Interface Discipline
 
-# Implement
+## Goal
 
-Implement responsibilities, not just signatures. Code should make business
-operations easy to find without exposing the technical steps they rely on.
-More files do not by themselves improve boundaries.
+Translate approved designs or bounded changes with established structure and
+behavior into maintainable code modules, files, and functions.
+
+Preserve design boundaries in the actual codebase. Do not collapse business behavior and technical mechanisms into monolithic files.
 
 ## Execution contract
 
 - Change code only when implementation is requested. Honor any design approval
-  gate; a request to implement an unapproved proposal does not bypass that gate.
-- Use the approved design, established behavior, compatibility constraints,
-  and project conventions as inputs. Inspect relevant implementations, callers,
-  and tests before editing.
-- Small changes within established contracts do not require a separate design
-  document. Do not invent an architecture exercise for a local fix.
-- If implementation requires a material change to agreed responsibilities,
-  interfaces, dependency direction, or behavior, stop the affected work and
-  return that decision to `software-design` for approval. Do not silently
-  redesign while coding.
-- If a required skill or reference is unavailable, report the missing dependency
-  and the affected work. Do not claim its workflow has been applied.
+  gate; an implementation request alone does not approve an unapproved design.
+- Use the approved design or established contracts, compatibility constraints,
+  and project conventions. Local fixes within those contracts do not require
+  a separate review, design phase, or design document.
+- If implementation requires material changes to responsibilities, module
+  boundaries, public contracts, dependency direction, failure semantics, or
+  behavior, pause the affected work. Return the decision to `software-design`
+  with evidence and seek approval before proceeding.
+- Report missing required skills or references and the affected work.
+  Do not claim their workflows have been applied.
 
-## Placement principles
+## Principles
 
-- **Separate reasons to change.** Business operations express intent and own
-  business decisions. Technical modules own mechanisms such as filesystem access,
-  encoding, serialization, and protocol handling. Do not interleave their details
-  in the same operation.
-- **Distinguish format from meaning.** Malformed JSON and missing format fields
-  belong to the format boundary. Whether an order may be cancelled belongs to
-  business rules. Place validation by the knowledge it needs, not its name.
-- **Hide technical knowledge.** Moving calls to helpers is insufficient if
-  business callers still coordinate decoding, format selection, and technical
-  error translation. Put that sequence behind the capability that owns it.
-  Preserve failures callers need to handle; never turn failure into apparent success.
-- **Give functions a discoverable home.** Find the existing owner first.
-  Add a focused module only when no suitable owner exists. Do not default to the
-  current entry-point file or a generic `utils` module.
-- **Keep cohesive details together.** Small private helpers serving the same
-  responsibility may share a file. Separate independently changing business and
-  technical responsibilities into focused modules using the project's conventions.
-  Do not impose line limits, one-function-per-file rules, or a fixed layer tree.
-- **Earn abstractions.** Plain functions and concrete modules are sufficient
-  unless the design needs a substitution seam. Avoid pass-through layers,
-  speculative interfaces, and circular dependencies.
+1. **Confirm responsibilities before coding** — Inspect existing component responsibilities and contracts; implement them rather than redesigning them.
+2. **One responsibility per module** — Organize files around cohesive responsibilities, not execution sequence.
+3. **Separate business from technology** — Business workflows express intent; technical modules own I/O and format handling. Distinguish format validation from business decisions.
+4. **Explicit interfaces** — Expose only the contracts required by collaborating components.
+5. **Hide implementation details** — Keep private helpers and technical sequences inside their owning modules without hiding failures callers must handle.
+6. **Cohesion over fragmentation** — Avoid both God Files and unnecessary one-function-per-file decomposition.
 
 ## Workflow
 
-### 1. Locate responsibilities
+1. Inspect the approved design or established behavior, relevant implementations,
+   representative callers, and tests.
+2. Locate responsibilities with a concise Code Placement Map when useful:
+   - Map confirmed responsibilities to concrete files and functions.
+   - Identify existing interfaces to reuse and allowed dependencies.
+   - Reuse the approved design; do not redefine contracts or responsibility boundaries.
+   - Do not require a separate artifact for an obvious local fix.
+3. Implement the smallest coherent change within those decisions. Keep dependent
+   callers consistent and preserve business invariants, failure semantics, and compatibility.
+4. Review changed code and representative callers for file boundaries, interface
+   clarity, and dependency direction. Check for leaked technical coordination,
+   misplaced business rules, cycles, and unnecessary public APIs or pass-through layers.
+5. Run relevant project tests, type checks, linters, and builds as applicable.
+   Add focused coverage for changed behavior and important failures. Preserve
+   the constraints protected by existing tests when migrating coverage.
 
-Map the requested operations to their owning modules or files and allowed
-dependencies. Include business rules, state, effects, format handling, and
-failure ownership where relevant. Reuse an existing design map when sufficient.
+## Constraints
 
-Check representative callers to see what knowledge the interface must hide.
-Resolve material ambiguity before editing. Keep the map brief; do not create
-a separate document merely to restate obvious code.
+- Do not put unrelated business operations and technical operations in the same module.
+- Do not introduce technical dependencies into business workflows without a clear reason.
+- Do not create generic utility modules as dumping grounds.
+- Do not create abstractions without a concrete responsibility or collaboration need.
+- Do not blindly follow an existing poor file organization.
+- Adjust private helpers, internal naming, local algorithms, and file placement
+  within agreed responsibilities and contracts. Correct implementation drift,
+  but return material design changes for approval rather than silently adopting
+  better boundaries.
 
-**Exit:** Each changed responsibility has a home. Technical details will not
-accumulate in a business entry point merely because that is where coding starts.
+## Completion Criteria
 
-### 2. Implement the smallest coherent change
+Code structure reflects component responsibilities, interfaces are explicit, technical details are encapsulated, and business behavior can be located and tested independently.
 
-Follow the responsibility map and approved contracts. Reuse existing capabilities.
-Keep dependent callers consistent and preserve business invariants, failure
-semantics, and compatibility. Put new functions at their owner as they are written,
-not in one large file awaiting a hypothetical cleanup.
-
-For example, importing orders might use:
-
-```text
-orders/
-  import-orders.ts    # Coordinates the business operation and its outcomes
-  order.ts            # Owns order rules
-  order-file.ts       # Hides file reading, decoding, and format handling
-  order-format.ts     # Owns format parsing when it warrants a separate module
-```
-
-The business operation calls `readOrderFile(path)`, applies order rules, and
-saves orders. It does not open files, choose encodings, or decode JSON inline.
-The file reader reports read and format failures; the business operation decides
-their business consequences.
-
-This is not a mandatory file tree. A short private parser can stay in
-`order-file.ts` when it serves that responsibility and has no independent reason
-to change. Do not move business eligibility checks there merely because they
-inspect parsed fields.
-
-**Exit:** Code and callers implement the agreed behavior and responsibility map.
-
-### 3. Verify behavior and boundaries
-
-Run the project's relevant tests, type checks, linters, and builds as applicable.
-Add focused coverage for changed behavior and important failure paths.
-Do not remove existing coverage without preserving the constraints it protects.
-
-Inspect the changed code and representative callers:
-
-- Do business operations still contain low-level I/O or format handling?
-- Have technical modules acquired business decisions?
-- Must callers still coordinate technical steps that should be hidden?
-- Can a maintainer locate a changed function by its business or technical role?
-- Did the split introduce cycles, pass-through wrappers, or unnecessary public APIs?
-
-Correct implementation drift within the approved design. Return material design
-changes for approval. Passing tests alone does not establish sound boundaries,
-and file splitting alone does not establish correct behavior.
-
-**Exit:** Report the implemented change, executed checks, and any blockers or
-unverified behavior. Claim completion only when both behavior and boundary
-checks support it.
+Passing tests alone does not establish sound boundaries. Report the implemented
+change, executed checks, blockers, and unverified behavior. Claim completion only
+when both behavior and boundary checks support it.
