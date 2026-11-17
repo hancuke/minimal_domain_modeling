@@ -1,6 +1,6 @@
 ---
 name: module-deepening
-description: Independently diagnose module-deepening opportunities in existing code and judge whether a change is worthwhile. Use for assessment of repeated caller knowledge, changes rippling across modules, or existing boundaries and seams. Target software design and implementation belong to software-design.
+description: Independently diagnose module-deepening opportunities in existing code and judge whether a change is worthwhile. Use for assessment of repeated caller knowledge, changes rippling across modules, or existing boundaries and seams. Target design belongs to software-design; approved code changes belong to implement.
 ---
 
 # Module Deepening

@@ -1,6 +1,6 @@
 ---
 name: minimal-domain-modeling
-description: Model a business problem through the fewest sufficient concepts, facts, rules, responsibilities, lifecycles, and collaborations. Use when clarifying business requirements or reviewing business boundaries, including when existing code supplies evidence. Support whole-system and local models; software structure and implementation belong to software-design.
+description: Model a business problem through the fewest sufficient concepts, facts, rules, responsibilities, lifecycles, and collaborations. Use when clarifying business requirements or reviewing business boundaries, including when existing code supplies evidence. Support whole-system and local models; software structure belongs to software-design and approved code changes belong to implement.
 ---
 
 # Minimal Domain Modeling

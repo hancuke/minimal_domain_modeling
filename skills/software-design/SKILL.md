@@ -1,13 +1,13 @@
 ---
 name: software-design
-description: Design software structure and minimal interfaces from a domain model, confirmed requirements, or existing code and an improvement goal. Use for feature architecture, redesigning an implementation, or delivering a selected refactor. Diagnose existing code as needed for the target design. Standalone module-boundary diagnosis belongs to module-deepening. Present the design for approval before implementing requested code changes.
+description: Design software structure and minimal interfaces from a domain model, confirmed requirements, or existing code and an improvement goal. Use for feature architecture, redesigning an implementation, or designing a selected refactor. Diagnose existing code as needed for the target design. Standalone module-boundary diagnosis belongs to module-deepening. Present the design for approval before handing requested code changes to implement.
 ---
 
 # Software Design
 
 Turn established business behavior into coherent code objects, modules, and
 minimal interfaces. Diagnose relevant problems before redesigning existing code.
-Implement and verify only when requested and approved.
+Hand off implementation only when requested and approved.
 
 ## Execution contract
 
@@ -84,6 +84,11 @@ Preserve confirmed business invariants and lifecycles.
 Compare coherent structures before deciding local details.
 Existing code boundaries can change. A business concept does not require its own class.
 
+Make the owners of business operations, business rules, technical I/O, and format
+handling explicit where relevant. Show which capability hides technical sequences
+from business callers. Distinguish format validation from business decisions.
+Do not prescribe one file per function or introduce layers only to separate names.
+
 Derive the minimum interface needed by callers: operations, inputs, results,
 usage constraints, and failure semantics. Make dependency direction clear.
 Use project terminology.
@@ -124,17 +129,22 @@ requests, ask for approval and stop under the approval gate.
 **Exit:** The design is submitted for review.
 Submission completes the design phase. It does not authorize implementation.
 
-### 5. Implement and verify after approval
+### 5. Hand off implementation after approval
 
 Proceed only after the approval gate is satisfied and key uncertainties are resolved.
-Make the smallest coherent change that implements the approved structure.
-Follow project conventions. Keep dependent callers consistent.
+Load `implement` and hand off the approved responsibilities, interfaces, dependency
+direction, state and effect ownership, failure semantics, compatibility constraints,
+and migration and verification needs. Reuse the approved design; do not create
+a duplicate handoff document.
 
-Run existing checks covering changed behavior and relevant integration risks.
-If implementation invalidates a design assumption, revisit the affected design.
+`implement` owns code placement, implementation, and behavior and boundary checks.
+If implementation invalidates a design assumption, revisit only the affected
+design and seek renewed approval for material changes.
 
-**Exit:** The approved change is implemented and checks pass.
-Otherwise, state blockers and unverified behavior.
+If `implement` is unavailable, report the missing dependency and stop before coding.
+
+**Exit:** Implementation is handed to `implement` with the approved contract.
+Completion and verification are reported under that skill's execution contract.
 
 ## References
 

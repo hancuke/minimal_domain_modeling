@@ -9,16 +9,19 @@
 | `communication-policy` | 组织、改写或审阅回答、设计、模型与研究报告 | 根据读者目标和理解依赖组织信息；不替代专业判断、交付要求或执行门槛 |
 | `minimal-domain-modeling` | 明确业务含义，建立领域模型，或评估、简化已有业务边界 | 输出简洁的系统级业务模型：概念与职责、协作与生命周期、业务不变量；不负责软件结构或实现 |
 | `module-deepening` | 独立诊断现有代码的重复知识、调用者负担、修改牵连和深化机会 | 提供代码证据、候选优先级和接口方向；允许结论“不重构”，不默认实施 |
-| `software-design` | 根据领域模型、明确需求，或现有实现与优化目标设计软件 | 必要时诊断现状，设计代码对象、模块、接口和迁移验证方案；仅在要求代码变更且方案获批后实施 |
+| `software-design` | 根据领域模型、明确需求，或现有实现与优化目标设计软件 | 必要时诊断现状，设计代码对象、模块、接口和迁移验证方案；仅在要求代码变更且方案获批后交给 `implement` |
+| `implement` | 实施获批的软件设计，或结构与行为已明确的局部代码变更 | 按职责放置函数，隔离业务操作与底层技术机制；完成实现、行为验证与边界验收，不擅自改变设计 |
 | `ui-design` | 设计界面、评审渲染结果，或实现页面、组件和样式 | 保留业务行为和数据契约；设计与评审不修改代码，实现需检查渲染及相关交互 |
 
-按任务选择所需 Skill，不要求每次依次运行全部。需要决定业务含义时进入领域建模，代码也可作为业务证据；已有明确行为的技术改动直接进入 `software-design`，无需先生成领域模型文档或运行深化诊断。混合任务先确认受影响的业务规则，再设计实现。
+按任务选择所需 Skill，不要求每次依次运行全部。需要决定业务含义时进入领域建模，代码也可作为业务证据；已有明确行为但需要设计结构的技术改动进入 `software-design`，既有结构与契约内的局部变更可直接进入 `implement`，无需先生成领域模型文档或运行深化诊断。混合任务先确认受影响的业务规则，再设计实现。
 
 `communication-policy` 横向约束沟通方式，任务 Skill 定义专业内容、流程和验证要求。它不强制统一大纲，也不是其他 Skill 独立安装的必需依赖；持续启用由目标 Agent 的常驻指令负责，见下方启用说明。
 
 领域模型是业务语义契约，不是类或模块蓝图。`software-design` 可以重新划分代码边界，但不能擅自改变已确认的业务含义；遇到歧义时只交回受影响的业务问题，不默认重做整个领域模型。
 
-`module-deepening` 负责独立判断“现有复杂度在哪里，是否值得集中”；`software-design` 负责“目标软件结构怎样设计并安全交付”，也能按设计目标诊断现有实现。用户要求落实已有诊断建议时，后者复用选定候选、证据、约束和验证需求，不重复整个诊断。设计请求以方案结束；实施请求先提交方案等待明确批准，批准后才修改代码。
+`module-deepening` 负责独立判断“现有复杂度在哪里，是否值得集中”；`software-design` 负责“目标软件结构怎样设计”，也能按设计目标诊断现有实现。用户要求落实已有诊断建议时，后者复用选定候选、证据、约束和验证需求，不重复整个诊断。设计请求以方案结束；需要设计的实施请求先提交方案等待明确批准，批准后交给 `implement` 修改代码。
+
+`implement` 负责“已确认的设计如何落到可定位、可验证的代码”。实施前明确职责落位，实施后同时检查行为与边界，避免业务操作混入文件读写、编码和格式解析细节。按变化原因分离，不机械追求文件数量、固定分层或一函数一文件。既有契约内的小修复无需单独设计文档；需要实质改变职责、接口、依赖方向或行为时，交回 `software-design` 确认，不边写边改架构。
  
 
 ## 文件与安装边界
@@ -43,6 +46,8 @@ minimal_domain_modeling/
 │   │       └── alternatives.md
 │   ├── software-design/
 │   │   └── SKILL.md
+│   ├── implement/
+│   │   └── SKILL.md
 │   └── ui-design/
 │       └── SKILL.md
 └── evaluations/
@@ -57,6 +62,8 @@ minimal_domain_modeling/
 通用表达规则仅维护在 `communication-policy/SKILL.md`，不再单独维护 `Agent Writing Standard.md`。各任务正文保留专业原则、示例、流程和交付要求，不强制引用 Communication Policy。共享术语与架构约束在 `module-deepening/references/design-principles.md`；依赖语义、seam 放置和测试迁移细则在 `deepening.md`；方案比较方法在 `alternatives.md`。
 
 `module-deepening` 评估候选前读取共享参考。`software-design` 仅在模块边界、依赖隔离或重要架构取舍时读取它；简单局部改动不加载参考。依赖替代、seam 调整或测试迁移时读取 `deepening.md`；有实质性方案差异或明确要求替代方案时读取 `alternatives.md`。读取参考不启动独立诊断流程。
+
+`software-design` 获批后需要实施时加载 `implement`，交接既有方案而不重复生成文档。`implement` 正文本身不依赖其他 Skill 的参考文件；实施中需要重新设计时才交回 `software-design`。缺少所需 Skill 时明确报告，不将未执行的流程视为已完成。
 
 ## 在另一台机器安装
 
@@ -81,14 +88,15 @@ npx skills add hancuke/minimal_domain_modeling \
   --global
 ```
 
-将 `--skill` 的值替换为 `communication-policy`、`module-deepening` 或 `ui-design` 可安装其他 Skill。安装 `software-design` 时也安装其参考依赖：
+将 `--skill` 的值替换为 `communication-policy`、`module-deepening`、`implement` 或 `ui-design` 可安装其他 Skill。安装 `software-design` 时也安装其参考依赖和实施交接 Skill：
 
 ```sh
 npx skills add hancuke/minimal_domain_modeling --skill module-deepening
 npx skills add hancuke/minimal_domain_modeling --skill software-design
+npx skills add hancuke/minimal_domain_modeling --skill implement
 ```
 
-两次安装选择相同 Agent 和安装范围，使两个目录处于同一 Skill 父目录。不要假设安装工具会自动解析跨 Skill 文件依赖；安装后检查 `software-design/SKILL.md` 中的三个相对引用均可读取。缺失依赖应明确报告，不能把未加载的规则视为已应用。
+三次安装选择相同 Agent 和安装范围，使三个目录处于同一 Skill 父目录。不要假设安装工具会自动解析跨 Skill 依赖；安装后检查 `software-design/SKILL.md` 中的三个相对引用均可读取，并确认 Agent 能找到 `implement`。缺失依赖应明确报告，不能把未加载的规则视为已应用。
 
 `npm install skills` 只安装 Skills CLI，不会安装本仓库的 Skill；无需将本仓库发布到 npm。
 
@@ -144,13 +152,14 @@ test ! -e "$HOME/.claude/skills/minimal-domain-modeling" &&
   cp -R skills/minimal-domain-modeling "$HOME/.claude/skills/"
 ```
 
-安装两个技术设计 Skill 及共享参考，使用同一父目录：
+安装技术设计、实施 Skill 及共享参考，使用同一父目录：
 
 ```sh
 mkdir -p "$HOME/.claude/skills"
 test ! -e "$HOME/.claude/skills/module-deepening" &&
   test ! -e "$HOME/.claude/skills/software-design" &&
-  cp -R skills/module-deepening skills/software-design "$HOME/.claude/skills/"
+  test ! -e "$HOME/.claude/skills/implement" &&
+  cp -R skills/module-deepening skills/software-design skills/implement "$HOME/.claude/skills/"
 ```
 
 Claude Code 项目安装，在目标业务项目根目录执行；将源路径替换为本项目的实际路径：
@@ -161,7 +170,7 @@ test ! -e .claude/skills/minimal-domain-modeling &&
   cp -R /path/to/minimal_domain_modeling/skills/minimal-domain-modeling .claude/skills/
 ```
 
-项目级安装技术设计 Skill 时，同样将两个完整目录放在 `.claude/skills/` 下。
+项目级安装技术设计与实施 Skill 时，同样将三个完整目录放在 `.claude/skills/` 下。
 以上命令在已有同名目录时停止复制；它们不是更新命令。
 启动新会话后，用 `/minimal-domain-modeling` 显式调用，也可通过相关建模请求触发。
 深化诊断入口由 `codebase-design` 改名为 `module-deepening`；更新旧安装时核对本地修改，确认新目录可用后再移除旧入口，避免同时发现两套规则。
