@@ -1,80 +1,80 @@
 
-# Principle-driven Skill Design 
+# Principle-driven Skill Design
 
-从一段复杂的知识、经验或讨论中，提炼出最少但足够指导行为的 Insights、Principles 和 Examples。它不是追求最短的文档，而是追求最高的信息密度和决策价值。
+Distill complex knowledge, experience, or discussion into the smallest set of insights, principles, and examples sufficient to guide behavior. The goal is not the shortest document, but the highest information density and decision value.
 
-# skill 类型
-Principle 擅长指导判断，但不一定擅长指导执行。
+# Skill Types
+Principles are effective at guiding judgment, but not necessarily execution.
 
-考虑三个不同类型的 Skill：
+Consider three types of skills:
 
-| Skill 类型 | 最重要的描述方式                              |
-| -------- | ------------------------------------- |
-| 思维方法型    | Insight + Principle + Examples        |
-| 设计规范型    | Principle + Good / Avoid              |
-| 工作流程型    | Steps + Decision Rules + Verification |
+| Skill Type | Primary Description Format |
+| --- | --- |
+| Thinking method | Insight + Principle + Examples |
+| Design standard | Principle + Good / Avoid |
+| Workflow | Steps + Decision Rules + Verification |
 
 
-## 一种更精简的 Skill 描述模型
+## A Leaner Model for Describing Skills
 
-设计成三个层次：
+Structure the description in three layers:
 
 Layer 1 · Understanding
 
 Insight
 
-解释这个 Skill 背后的核心认知：为什么需要它？它试图解决什么根本问题？
+Explain the core insight behind the skill: why is it needed, and what fundamental problem does it address?
 
 Layer 2 · Judgment
 
 Principles
 
-定义 Agent 的判断标准：什么是好的？什么是不好的？遇到冲突时优先考虑什么？
+Define the agent's criteria for judgment: what is good, what is not, and what takes priority when criteria conflict?
 
 Layer 3 · Execution
 
 Examples / Workflow
 
-用正反例解释原则如何落地；如果是程序性任务，则定义必要步骤、决策分支和验证条件。
+Use positive and negative examples to show how principles apply in practice. For procedural tasks, define the necessary steps, decision branches, and verification conditions.
 
-这三个层次有一个重要的逻辑关系：
+The three layers have an important logical relationship:
 
-- Insight 提供理解。
-- Principle 提供判断。
-- Example / Workflow 提供行为约束。
+- Insights provide understanding.
+- Principles guide judgment.
+- Examples and workflows constrain behavior.
 
-不是每个 Skill 都需要完整的三个层次。例如，某些 Skill 可能只需要一条 Insight 和三条 Principles。
-
-
-| 场景              | 最合适的表达       |
-| --------------- | ------------ |
-| Agent 容易误解问题    | Insight      |
-| Agent 容易做出错误选择  | Principle    |
-| Agent 不理解原则如何应用 | Examples     |
-| Agent 容易遗漏步骤    | Workflow     |
-| Agent 容易违反边界    | Constraints  |
-| Agent 必须保证结果正确  | Verification |
-
-五条设计准则：
-
-1. Insight over Introduction：不要花篇幅介绍背景，直接表达核心认知。
-2. Principles over Generic Instructions：用判断原则替代空泛的行为要求。
-3. Examples over Repetition：用正反例展示原则，而不是反复解释原则。
-4. Workflow when Necessary：只有需要可重复执行的任务才定义详细流程。
-5. Evidence over Completeness：通过实际任务测试 Skill，而不是通过文档长度判断质量。
+Not every skill needs all three layers. Some may need only one insight and three principles.
 
 
-每条 Principle 必须能够指导一个实际决策。简短不等于清晰，抽象也不等于高级。
+| Situation | Best Format |
+| --- | --- |
+| The agent is likely to misunderstand the problem | Insight |
+| The agent is likely to make poor choices | Principle |
+| The agent does not understand how to apply a principle | Examples |
+| The agent is likely to miss steps | Workflow |
+| The agent is likely to cross boundaries | Constraints |
+| The agent must ensure the result is correct | Verification |
 
-如果一个 Principle 需要 Agent 自己猜测具体含义，它就可能成为一个新的模糊指令。好的 Example 应该消除这种歧义，而不是仅仅装饰文档。
+Five design guidelines:
 
-不够好的 Principle：
+1. Insight over Introduction: State the core insight directly instead of spending space on background.
+2. Principles over Generic Instructions: Replace vague behavioral demands with principles that guide decisions.
+3. Examples over Repetition: Demonstrate principles with positive and negative examples instead of repeatedly explaining them.
+4. Workflow when Necessary: Define detailed workflows only for tasks that need repeatable execution.
+5. Evidence over Completeness: Test skills on real tasks rather than judging quality by document length.
+
+
+Every principle must guide a real decision. Brevity does not guarantee clarity, and abstraction does not imply sophistication.
+
+If a principle requires the agent to guess its concrete meaning, it risks becoming another vague instruction. Good examples should remove that ambiguity, not merely decorate the document.
+
+A weak principle:
 > Write clean and maintainable code.
 
-更好的 Principle：
+A better principle:
 > Prefer explicit domain types over generic dictionaries when the data has stable business meaning.
 
-前者几乎没有决策价值，后者可以直接影响 Agent 的代码设计。
+The former offers little decision value; the latter can directly influence the agent's code design.
 
 
 <template_schema>
@@ -88,21 +88,21 @@ description: ...
 
 ## Insight
 
-用一句话表达核心认知。
+State the core insight in one sentence.
 
-## Principles 
+## Principles
 
 - Principle 1
 - Principle 2
 - Principle 3
 
 ## Good Examples
-展示符合原则的具体做法。
+Show concrete practices that follow the principles.
 
 ## Avoid
-展示典型错误及其原因。
+Show common mistakes and explain why they are mistakes.
 
 ## Execution
-仅在需要重复执行的工作流程中定义。
+Define this section only for workflows that require repeatable execution.
 
 </template_schema>
