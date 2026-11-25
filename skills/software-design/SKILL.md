@@ -45,6 +45,10 @@ Hand off implementation only when requested and approved.
 - **Only necessary structure.** Prefer simple functions, objects, or pipelines
   over speculative layers and options. Designing the complete structure does not require
   a whole-codebase rewrite.
+- **Problem before pattern.** Identify the rules, state, or variation that need
+  explicit structure before choosing a design technique. Patterns are candidate
+  solutions, not required deliverables. Sequential code is valid when it keeps
+  the relevant rules and responsibilities clear.
 
 ## Workflow
 
@@ -81,6 +85,22 @@ Existing-code improvements have evidence and a justified direction.
 Map established business concepts and behavior to code objects, modules, and
 interfaces. Define software responsibilities and ownership of state and effects.
 Preserve confirmed business invariants and lifecycles.
+Identify which complexity needs explicit representation:
+
+- State-dependent behavior and legal transitions.
+- Business decisions or algorithms that vary independently.
+- External dependencies that need a stable boundary.
+- Multi-step work with partial completion, retry, or recovery.
+
+Use only the relevant perspectives, not a mandatory checklist of patterns.
+Choose the simplest structure that makes the constraints explicit. A function,
+decision table, or transition table may be sufficient; a class hierarchy,
+framework, or generic engine needs additional justification.
+Read the [state and transitions reference](references/state-and-transitions.md)
+when operation legality depends on lifecycle state or transition rules are
+scattered. Use existing shared references for consequential dependency boundaries
+and alternative comparisons; do not load unrelated guidance.
+
 Compare coherent structures before deciding local details.
 Existing code boundaries can change. A business concept does not require its own class.
 
@@ -107,8 +127,15 @@ Ownership of business rules, state, and effects is clear.
 ### 3. Challenge the solution and plan migration
 
 Trace normal, failure, and change scenarios through the proposed interfaces.
+Where relevant, exercise rejected transitions, changes to decision rules, and
+partial failure or retry. Check that the design prevents invalid outcomes and
+makes recovery responsibilities explicit.
 Apply the principles. Read the [references](#references) when their conditions apply.
 Check whether the structure removes complexity or shifts it to callers.
+When proposing a pattern or mechanism, compare it with a credible simpler
+implementation under the same constraints. Explain which rule it protects or
+which required variation it isolates, and the cost it adds. Do not invent a
+complex alternative for an already sufficient simple design.
 
 Compare the target structure with the current implementation.
 Plan caller migration, compatibility checks, and recovery for deployment and data risks.
@@ -124,7 +151,9 @@ Present the target structure and interfaces with representative usage.
 Explain important differences from the current design.
 Include the migration and verification plan.
 Use signatures, a diagram, or code sketches only when they clarify the decision.
-Explain significant trade-offs.
+Explain significant trade-offs, including consequential design-technique choices.
+Integrate these decisions into the design; do not add a mandatory pattern report
+or separate design-method document.
 
 For existing-code improvements, include the motivating evidence and expected
 benefit. These findings support the design. They do not claim a code change.
@@ -154,10 +183,11 @@ Completion and verification are reported under that skill's execution contract.
 
 ## References
 
-Read sibling references only under these conditions. Reading alone is not diagnosis.
+Read references only under these conditions. Reading alone is not diagnosis.
 
 | Condition | Reference |
 | --- | --- |
+| Operation legality depends on lifecycle state, or transition rules are scattered | [state-and-transitions.md](references/state-and-transitions.md) |
 | Module boundaries, dependency isolation, or consequential architectural choices | [design-principles.md](../code-structure-review/references/design-principles.md) |
 | Dependency substitution, seam changes, or test migration | [dependencies-and-verification.md](../code-structure-review/references/dependencies-and-verification.md) |
 | Alternatives requested, or designs differ consequentially in caller obligations, state ownership, or dependency direction | [alternatives.md](../code-structure-review/references/alternatives.md) |

@@ -33,7 +33,9 @@ minimal_domain_modeling/
     |       |-- dependencies-and-verification.md
     |       `-- alternatives.md
     |-- software-design/
-    |   `-- SKILL.md
+    |   |-- SKILL.md
+    |   `-- references/
+    |       `-- state-and-transitions.md
     |-- implement/
     |   `-- SKILL.md
     `-- ui-design/
@@ -68,6 +70,14 @@ information-retention obligations into the relevant responsibilities, lifecycles
 or invariants. Mark unknown facts where they arise rather than inventing global
 rules. Resolve skill file references relative to the skill directory, without
 depending on this repository's absolute paths, scripts, or network access.
+
+`software-design` owns the choice of engineering structures under confirmed
+business rules. Its main skill contains the problem-first selection guidance;
+its local `references/state-and-transitions.md` is read when operation legality
+depends on lifecycle state or transition rules are scattered. This reference
+supports design decisions without requiring the State pattern or a framework.
+Add further method references only when real tasks establish a need, and keep
+their reading conditions in the main skill rather than loading a pattern catalog.
 
 General writing rules are maintained only in
 [communication-policy/SKILL.md](../skills/communication-policy/SKILL.md);
