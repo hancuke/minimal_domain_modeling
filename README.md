@@ -3,6 +3,19 @@
 **Logical design first. If you haven't decided what to build, don't start
 implementing it.**
 
+## Core Philosophy
+
+**The fundamental problem in software design is managing complexity.**
+
+Complexity makes systems hard to understand and modify. The goal is to minimize complexity through:
+- Strategic (not tactical) programming
+- Deep modules with simple interfaces
+- Information hiding
+- Eliminating special cases and exceptions
+- Good names and obvious code
+- Clear abstractions
+
+
 Use AI to clarify intent, expose tradeoffs, and produce information-dense outputs
 that help you make decisions, not simply generate more code.
 

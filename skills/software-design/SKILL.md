@@ -111,8 +111,13 @@ do not require a complete file tree for every design.
 
 Make the owners of business operations, business rules, technical I/O, and format
 handling explicit where relevant. Show which capability hides technical sequences
-from business callers. Distinguish format validation from business decisions.
-Do not prescribe one file per function or introduce layers only to separate names.
+from business callers. Identify public business entry points and which
+implementations must remain internal. Business workflows coordinate capabilities;
+concrete storage, protocols, and serialization have separate implementation owners,
+even when they serve the same feature. Distinguish format validation from business
+decisions. Group by business capability before separating internal technical
+responsibilities, while respecting sound project conventions. Do not prescribe
+one file per function or introduce layers only to separate names.
 
 Derive the minimum interface needed by callers: operations, inputs, results,
 usage constraints, and failure semantics. Make dependency direction clear.
@@ -168,11 +173,15 @@ Submission completes the design phase. It does not authorize implementation.
 Proceed only after the approval gate is satisfied and key uncertainties are resolved.
 Load `implement` and hand off the approved responsibilities, interfaces, dependency
 direction, state and effect ownership, failure semantics, compatibility constraints,
-and migration and verification needs. Reuse the approved design; do not create
-a duplicate handoff document.
+and migration and verification needs. Explicitly identify public business entry
+points, internal rule owners, technical implementation owners, and where concrete
+dependencies are wired. Reuse the approved design; do not create a duplicate
+handoff document.
 
 `implement` owns concrete file and function placement within the approved
-responsibilities and contracts, implementation, and behavior and boundary checks.
+responsibilities and contracts, including the pre-implementation Code Placement
+Map for multi-responsibility features or mixed business and I/O changes.
+It also owns implementation and behavior and boundary checks.
 If implementation invalidates a design assumption, revisit only the affected
 design and seek renewed approval for material changes.
 

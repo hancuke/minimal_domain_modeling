@@ -72,6 +72,33 @@ Inspect implementations, representative callers, and tests.
 Identify who owns decisions, state, effects, and failures.
 Preserve project terminology. Ask about unknowns that could invalidate the recommendation.
 
+## Boundary checks
+
+Inspect the following in the bounded area. Treat a mismatch as a candidate finding,
+not automatic justification for restructuring; establish its cost through a caller
+or change scenario.
+
+- **Placement:** Business capabilities are discoverable in the directory structure;
+  files have cohesive responsibilities rather than mixing independently changing
+  rules and technical mechanisms. Respect sound project conventions.
+- **Entry points:** Outside callers use intended business operations rather than
+  internal technical implementations, except for designated wiring or integration
+  code. Identify leaked protocol, ordering, or recovery knowledge.
+- **Physical separation:** Public business workflow files coordinate capabilities,
+  while separate implementation files own SQL, protocol parsing, serialization,
+  and similar mechanisms. Private helpers in the same file are not this separation.
+- **Names:** File names identify their main responsibility; function names distinguish
+  business intent, decisions or calculations, and technical mechanisms. Demonstrate
+  ambiguity through a caller or maintenance task, not naming preference alone.
+- **Change locality:** Trace a relevant rule change and a provider or storage change.
+  Check whether each stays with its owner or unnecessarily crosses the boundary.
+  Inspect dependency direction, cycles, and existing mechanical boundary checks.
+
+Retain cohesive pure helpers and useful adapters. Do not recommend one file per
+function, empty facades, or project-wide technical directories as a universal fix.
+Final file placement belongs to `implement` within an approved design; this review
+reports evidence and improvement directions, not a mandatory target tree.
+
 ## Recommendations
 
 Rank findings by benefit, risk, and change cost. For each finding, include:
