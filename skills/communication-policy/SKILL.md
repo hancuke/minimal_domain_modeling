@@ -5,60 +5,65 @@ description: Organize answers, technical designs, business models, and research 
 
 # Communication Policy
 
-## Purpose and scope
+Make information easy to understand, verify, and act on—reducing reader effort
+without losing meaning.
 
-Make information easy to understand, verify, and act on. Apply this policy to
-user-facing answers, explanations, analysis, plans, and documents.
+## Contract
 
-The goal is not fewer words. It is less reader effort without losing meaning.
-This policy governs communication, not business decisions, technical correctness,
-execution permissions, or approval gates.
+- **Scope:** Governs clarity, ordering, and presentation of user-facing answers,
+  explanations, analysis, plans, and documents, alongside any active task skill.
+- **Non-goals (refuse):** Do not override higher-priority instructions or
+  task-specific deliverable contracts. Do not treat this policy as authority to
+  make business decisions, alter confirmed meaning, judge technical correctness,
+  edit files, skip required work, or impose a universal outline.
+- **Gates:** This policy adds no standalone approval gate; defer all execution
+  and approval gates to the active task skill. Never sacrifice correctness,
+  required evidence, or important boundaries for brevity—when a requested format
+  would mislead or omit decision-critical constraints, explain the conflict
+  before complying.
+- **Artifact separation:** Distinguish performing verification, reporting its
+  outcome, and maintaining a durable artifact. Place evidence and status where
+  the task requires them; never insert execution logs, change lists, or approval
+  history into a business model or similar durable artifact.
 
-## Core principle
+## Principles
 
-Organize information in the order the reader needs to understand, decide, or act.
-Provide concepts, premises, and constraints before later information depends on them.
-What belongs first depends on the task; a conclusion is not always the starting point.
+- **Dependency order first:** Organize information in the order the reader needs
+  to understand, decide, or act. Define concepts, premises, and constraints
+  before later content relies on them, and match depth to complexity,
+  consequence, and audience knowledge.
+  - **Good:** Define `Reservation` and `HoldExpiry` before explaining the
+    timeout transition rules that depend on them.
+  - **Avoid:** Lead with a summary of five timeout exceptions before defining
+    what `HoldExpiry` means in the model.
+- **Clarity without loss:** Use consistent terms, concrete words, explicit
+  subjects, and active verbs; prefer one main idea per sentence. Preserve
+  requested language, domain terms, conditions, exceptions, and domain
+  distinctions. Remove padding—never decision-relevant reasoning or evidence.
+  - **Good:** "Retry failed webhook deliveries up to 3 times with exponential
+    backoff, except on `4xx` responses (which fail immediately)."
+  - **Avoid:** "Webhook retries are handled gracefully in most failure cases."
+- **Epistemic explicitness:** Distinguish facts, assumptions, interpretations,
+  decisions, and recommendations. Support conclusions with evidence, and state
+  uncertainty or verification limits instead of implying certainty.
+  - **Good:** "Load test logs show P99 at 820ms (observed); lock contention is
+    the leading hypothesis, but CPU and lock profiles have not been captured."
+  - **Avoid:** "Lock contention causes P99 latency to reach 820ms."
+- **Structure matches relationship:** Choose presentation by the relationship
+  being expressed—headings for distinct ideas, lists for independent items,
+  tables for comparisons or structured attributes, diagrams for relationships,
+  interactions, or lifecycles, examples for rules and edge cases, and code
+  blocks only for code or literal technical content. Do not add structure merely
+  to decorate or fill a template.
+  - **Good:** Use a 3-column comparison table when contrasting three caching
+    strategies across latency, consistency, and memory cost.
+  - **Avoid:** Write three separate narrative paragraphs repeating the same
+    attribute labels, or force a table for a single-sentence answer.
 
-## Universal principles
+### Default communication patterns
 
-- **Relevance:** Include information that serves the reader's question and expected
-  outcome. Group related information. Do not repeat it unless repetition helps understanding.
-- **Explicit meaning:** Use consistent terms, concrete words, explicit subjects,
-  and active verbs. Prefer one main idea per sentence. State conditions, actions,
-  and outcomes. Define unfamiliar terms before relying on them.
-- **Trustworthiness:** Distinguish facts, assumptions, interpretations, decisions,
-  and recommendations. Support conclusions with evidence. State uncertainty and
-  verification limits instead of implying certainty.
-- **Necessary completeness:** Preserve meaning, important constraints, exceptions,
-  and domain distinctions. Do not simplify away information needed for a sound
-  decision or safe action.
-- **Economy:** Prefer specific statements over general claims. Explain non-obvious
-  recommendations and use examples when they reduce confusion. Remove padding,
-  not necessary reasoning or evidence.
-
-## Context adaptation
-
-Before composing:
-
-1. Identify the reader, actual question, and intended result: understanding,
-   judgment, a decision, or action.
-2. Identify what the reader already knows and which concepts, premises, or
-   constraints need explanation.
-3. Choose an order that respects those dependencies and the required deliverable.
-   Use the patterns below as defaults, not mandatory outlines.
-4. Choose depth according to complexity, consequence, and audience knowledge.
-   Simple questions usually need direct answers; consequential choices need
-   decision-relevant reasoning, alternatives, and limits.
-5. Use the requested language and preserve necessary domain and project terms.
-
-Choose presentation by the relationship being expressed. Use headings for distinct
-ideas, lists for independent items, tables for comparisons or structured attributes,
-and diagrams for relationships, interactions, or lifecycles. Use examples for rules
-and edge cases. Reserve code blocks for code or literal technical content.
-Do not add structure merely to decorate or fill a template.
-
-## Default communication patterns
+Adapt these defaults to the reader's knowledge and explicit requirements rather
+than treating them as mandatory outlines.
 
 | Task | What the reader needs first | Default progression |
 | --- | --- | --- |
@@ -67,34 +72,21 @@ Do not add structure merely to decorate or fill a template.
 | Business model | Necessary problem context and defined concepts | Problem and outcome, concepts and responsibilities, lifecycles and collaboration, invariants |
 | Research report | The finding and its confidence or limits | Conclusion, evidence, reasoning and limitations |
 
-Adapt these patterns to the reader's knowledge and explicit requirements.
-For example, define business concepts before using them to explain transitions;
-do not force a conclusion-first summary into every model.
+## Verification
 
-## Conflict resolution
+Before delivering, verify all criteria below:
 
-- Follow higher-priority instructions. Within those boundaries, honor explicit
-  audience and format requirements and task-specific deliverable contracts.
-- Do not sacrifice correctness, necessary evidence, or important boundaries for
-  brevity. Explain a conflict when the requested presentation would mislead.
-- Let task-specific skills determine required content, professional checks, and
-  execution gates. Improve expression without imposing a universal outline or
-  adding a separate approval step.
-- Distinguish performing verification, reporting its outcome, and maintaining a
-  durable artifact. Put evidence and status where the task requires them; do not
-  insert execution logs, change lists, or approval history into a business model.
-- Do not treat this policy as authority to change confirmed meaning, edit files,
-  or skip required work.
-
-## Delivery review
-
-Before delivering, check:
-
-1. Does the communication serve the actual question and expected result?
-2. Does the opening provide what this reader needs first?
-3. Are concepts and premises explained before later information relies on them?
-4. Are terms consistent and facts distinguishable from assumptions and conclusions?
-5. Are important conditions, exceptions, uncertainty, and evidence limits explicit?
-6. Are required content and task-specific boundaries preserved?
-7. Can words or sections be removed without impairing understanding, judgment,
-   or action?
+- **Reader-first opening:** The opening directly addresses the actual question
+  and supplies what this reader and task need first.
+- **No forward dependencies:** Every concept, premise, and constraint relied on
+  later is defined or established beforehand.
+- **Explicit epistemology:** Facts, assumptions, interpretations, and
+  recommendations are visibly distinct; uncertainty and verification limits are
+  stated.
+- **Intact boundaries:** Required content, conditions, exceptions, and
+  task-specific deliverable boundaries are preserved without loss.
+- **Delivery format constraints:** Requested language and project/domain terms
+  are preserved; durable artifacts contain no execution logs, change lists, or
+  approval history.
+- **Zero filler:** No sentence, heading, or section remains that can be removed
+  without impairing understanding, judgment, or action.

@@ -34,7 +34,7 @@ business meaning to designing software and implementing agreed changes.
 | Assess whether existing code structure needs improvement | [code-structure-review](skills/code-structure-review/SKILL.md) |
 | Decide software boundaries and contracts | [software-design](skills/software-design/SKILL.md) |
 | Implement an agreed change | [implement](skills/implement/SKILL.md) |
-| Design, review, or implement an interface | [ui-design](skills/ui-design/SKILL.md) |
+| Design UI layouts, compare options, and specify interactions | [ui-design](skills/ui-design/SKILL.md) |
 | Make outputs clearer and more useful for decisions | [communication-policy](skills/communication-policy/SKILL.md) |
 
 Choose by need, not as a fixed pipeline. Local changes with clear behavior and
@@ -69,4 +69,4 @@ dependencies, global installation, and upgrades.
 
 - [Installation and activation](docs/installation.md)
 - [Repository maintenance and authoring sources](docs/maintaining.md)
-- [Principle-driven skill design](guide.md)
+- [Skill authoring policy](guide.md)

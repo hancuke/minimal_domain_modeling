@@ -8,123 +8,167 @@ description: Review existing code structure and judge which problems are worth a
 Good structure gives responsibilities, knowledge, and changes appropriate owners.
 Review concrete costs and benefits, not module size or a preferred refactoring.
 
+## Contract
+
+- **Required inputs:** Existing code (specific modules, paths, or codebase area)
+  and known compatibility constraints.
+- **Non-goals (refuse):** Refuse modifying code, prescribing finalized interface
+  signatures, mandating a target file tree, or writing full migration plans.
+  Refuse new-feature design and goal-driven redesign (refer to `software-design`).
+- **Handoff targets:** Hand off target design, finalized interfaces, and
+  migration plans—together with review evidence, constraints, improvement
+  directions, and verification needs—to `software-design`. Hand off approved
+  code changes to `implement`. Hand off missing or contradictory business rules
+  to `minimal-domain-modeling`.
+- **Mandatory approval gates (must stop):**
+  - **Review-only handoff gate:** Stop after presenting ranked findings and
+    improvement directions. Even when implementation is also requested, resolve
+    important candidate choices and hand off to `software-design` without
+    modifying code or bypassing its design approval gate.
+  - **Blocking unknowns gate:** When missing code, context, or business
+    constraints could invalidate a recommendation, ask the user before
+    finalizing or explicitly mark affected judgments as provisional.
+
 ## Principles
 
-### Establish problems through scenarios
+- **Scenario-grounded evidence:** Use caller interactions, failure handling, or
+  change scenarios to demonstrate structural costs and choose the improvement
+  direction. File length, similar syntax, or a preference for deeper modules
+  alone is not evidence; concentrating knowledge, splitting responsibilities,
+  moving ownership, simplifying interfaces, and retaining boundaries are all
+  valid outcomes.
+  - **Good:** Show that one policy change requires coordinated edits across
+    callers, or separate protocol parsing from business decisions because they
+    change independently.
+  - **Avoid:** Recommend splitting a large file without identifying distinct
+    responsibilities, or assume every problem calls for a deeper, larger module.
+- **Clear knowledge ownership:** Identify repeated decisions, mixed
+  responsibilities, and unclear ownership of state and effects. Compare what
+  callers must understand about rules, ordering, and failures before and after a
+  proposed direction.
+  - **Good:** Consolidate transaction coordination behind one module so callers
+    express business intent without managing step order or partial rollback.
+  - **Avoid:** Wrap five calls behind one method while callers still manage call
+    order and recover partial failures.
+- **Protect independent change:** Treat independent rules, ownership, and
+  lifecycles as evidence for retaining a boundary. Keep cohesive pure helpers
+  and useful adapters; do not recommend one file per function, empty facades, or
+  project-wide technical directories as a universal fix.
+  - **Good:** Retain a thin adapter that isolates a provider's protocol and
+    error translation from business code.
+  - **Avoid:** Merge that adapter into business code because it is small, or
+    split cohesive logic into pass-through layers that make changes harder to
+    locate.
+- **Earn the cost of change:** Weigh caller burden and change locality against
+  coupling, compatibility risk, and migration cost under the same requirements.
+  Retaining the current structure is a valid outcome.
+  - **Good:** Recommend centralizing coordination only when scenario evidence
+    justifies the migration cost, preserving failure semantics and mapping
+    equivalent behavioral coverage before retiring internal tests.
+  - **Avoid:** Recommend adding an abstraction for hypothetical reuse, or
+    dropping internal tests without checking which invariants they protect.
 
-Use caller interactions, failure handling, or change scenarios to demonstrate
-structural costs. File length and similar syntax alone are not evidence.
+## Workflow
 
-- **Good:** Show that one policy change requires coordinated edits across callers.
-- **Avoid:** Recommend splitting a large file without identifying distinct responsibilities.
+### 1. Bound scope and gather evidence
+- Bound the inspected area and compatibility constraints. For codebase-wide
+  requests, scan entry points, tests, and dependencies to choose a concrete
+  area; expand only when evidence leads elsewhere.
+- Inspect implementations, representative callers, and tests. Identify who owns
+  decisions, state, effects, and failures. Preserve project terminology.
+- *Intermediate deliverable:* Bounded inspection scope, compatibility
+  constraints, and ownership map grounded in code locations.
+- *Stopping condition:* Target area, representative callers, and current
+  ownership of rules, state, effects, and failures are established.
 
-### Give knowledge a clear owner
+### 2. Run boundary checks and evaluate costs
+- Read [design-principles.md](references/design-principles.md) before evaluating
+  candidates; consult other references only when their conditions apply.
+- Inspect the bounded area across five boundary checks. Treat a mismatch as a
+  candidate finding, not automatic justification for restructuring; establish
+  its cost through a caller or change scenario:
+  - **Placement:** Business capabilities are discoverable in the directory
+    structure; files have cohesive responsibilities rather than mixing
+    independently changing rules and technical mechanisms. Respect sound project
+    conventions.
+  - **Entry points:** Outside callers use intended business operations rather
+    than internal technical implementations (except designated wiring or
+    integration code). Identify leaked protocol, ordering, or recovery knowledge.
+  - **Physical separation:** Public business workflow files coordinate
+    capabilities, while separate files own SQL, protocol parsing, serialization,
+    and similar mechanisms. Private helpers in the same file do not establish
+    this separation.
+  - **Names:** File names identify their main responsibility; function names
+    distinguish business intent, decisions or calculations, and technical
+    mechanisms. Demonstrate ambiguity through a caller or maintenance task, not
+    naming preference alone.
+  - **Change locality:** Trace a relevant business-rule change and a provider or
+    storage change to check whether each stays with its owner or crosses
+    boundaries unnecessarily. Inspect dependency direction, cycles, and existing
+    mechanical boundary checks.
+- *Intermediate deliverable:* Candidate findings with scenario-backed cost
+  analysis and verified evidence.
+- *Stopping condition:* Every retained candidate has concrete code locations and
+  a demonstrated caller, failure, or change cost.
 
-Identify repeated decisions, mixed responsibilities, and unclear ownership of
-state and effects. Compare what callers must understand about rules, ordering,
-and failures before and after a proposed change.
+### 3. Prioritize findings and frame directions
+- Rank findings by benefit, risk, and change cost, including whether retaining
+  the current structure is preferable.
+- Frame credible improvement directions and changes to caller obligations,
+  ownership, and failure semantics without prescribing finalized signatures, a
+  mandatory file tree, or a full migration plan.
+- Sketch a representative caller interaction only when it clarifies a trade-off.
+- *Intermediate deliverable:* Ranked findings with improvement directions,
+  trade-offs, and verification needs.
+- *Stopping condition:* Priorities and directions are grounded in evidence,
+  major costs and verification needs are explicit, and out-of-scope design or
+  implementation work is deferred.
 
-- **Good:** A module owns transaction coordination. Callers express business intent.
-- **Avoid:** Wrap five calls in one method while callers still manage their order
-  and recover partial failures.
+## Verification
 
-### Protect independent change
+Do not consider the review complete until all criteria below are satisfied.
 
-Treat independent rules, ownership, and lifecycles as evidence for retaining
-a boundary.
+### Observable evidence
+- Every finding cites specific code locations and at least one concrete caller,
+  failure, or change scenario.
+- Structural claims are verified against actual imports, callers, and
+  implementations—not file length, file names, or helper visibility alone.
 
-- **Good:** Retain a thin adapter that isolates a provider's protocol and errors.
-- **Avoid:** Merge modules because both are small, or split cohesive logic into
-  pass-through layers that make changes harder to locate.
+### Validation criteria
+- **Evidence over assumption:** Verified observations, assumptions, inspection
+  limits, and exclusions are explicitly distinguished.
+- **Proportionality:** Each recommendation weighs benefit against compatibility
+  risk, migration cost, and test-coverage impact; retaining current structure is
+  treated as a valid outcome.
+- **Boundary discipline:** No finalized signatures, mandatory target file trees,
+  full migration plans, or code edits are produced.
+- **Actionable handoff:** Caller obligations, failure semantics, and
+  verification needs are clear enough for `software-design` to act on when
+  redesign is chosen.
 
-### Earn the cost of change
-
-Compare caller burden and change locality with coupling, compatibility risk,
-and migration cost. Retaining the current structure is a valid outcome.
-
-- **Good:** Centralize coordination supported by evidence. Preserve failure semantics
-  and identify equivalent behavioral coverage.
-- **Avoid:** Add an abstraction for hypothetical reuse, or remove internal tests
-  without checking which important invariants they protect.
-
-### Choose the direction from evidence
-
-Concentrating knowledge, splitting responsibilities, moving ownership,
-simplifying interfaces, and retaining boundaries are all possible outcomes.
-Module deepening is one technique for reducing caller knowledge, not the review's goal.
-
-- **Good:** Separate protocol parsing from business decisions when they change independently.
-- **Avoid:** Assume every problem calls for a deeper or larger module.
-
-## Execution contract
-
-Review existing code. Output findings and recommendations, not code changes
-or a finalized target design.
-New-feature design and goal-driven redesign belong to `software-design`.
-When implementation is also requested, resolve important candidate choices.
-Hand off evidence, constraints, improvement directions, and verification needs
-to that skill. Do not bypass its design approval gate.
-
-Bound the inspected area and compatibility constraints. For codebase-wide requests,
-scan entry points, tests, and dependencies to choose a concrete area.
-Expand only when evidence leads elsewhere.
-Inspect implementations, representative callers, and tests.
-Identify who owns decisions, state, effects, and failures.
-Preserve project terminology. Ask about unknowns that could invalidate the recommendation.
-
-## Boundary checks
-
-Inspect the following in the bounded area. Treat a mismatch as a candidate finding,
-not automatic justification for restructuring; establish its cost through a caller
-or change scenario.
-
-- **Placement:** Business capabilities are discoverable in the directory structure;
-  files have cohesive responsibilities rather than mixing independently changing
-  rules and technical mechanisms. Respect sound project conventions.
-- **Entry points:** Outside callers use intended business operations rather than
-  internal technical implementations, except for designated wiring or integration
-  code. Identify leaked protocol, ordering, or recovery knowledge.
-- **Physical separation:** Public business workflow files coordinate capabilities,
-  while separate implementation files own SQL, protocol parsing, serialization,
-  and similar mechanisms. Private helpers in the same file are not this separation.
-- **Names:** File names identify their main responsibility; function names distinguish
-  business intent, decisions or calculations, and technical mechanisms. Demonstrate
-  ambiguity through a caller or maintenance task, not naming preference alone.
-- **Change locality:** Trace a relevant rule change and a provider or storage change.
-  Check whether each stays with its owner or unnecessarily crosses the boundary.
-  Inspect dependency direction, cycles, and existing mechanical boundary checks.
-
-Retain cohesive pure helpers and useful adapters. Do not recommend one file per
-function, empty facades, or project-wide technical directories as a universal fix.
-Final file placement belongs to `implement` within an approved design; this review
-reports evidence and improvement directions, not a mandatory target tree.
-
-## Recommendations
-
-Rank findings by benefit, risk, and change cost. For each finding, include:
-
-- Code locations and a concrete caller or change scenario.
-- The structural problem and who currently bears its knowledge or change cost.
-- Whether a change is worthwhile and credible improvement directions.
-- Changes to caller obligations and ownership, including conditions, outcomes,
-  and failure semantics.
-- Major costs and verification needs.
-
-Sketch a representative caller interaction when it clarifies a recommendation.
-Do not require finalized signatures, a file tree, or a full migration plan;
-those belong to `software-design`.
-State inspection limits and important exclusions. Distinguish evidence from assumptions.
-If code or a required reference is missing, report it.
-Keep affected claims provisional.
+### Delivery constraints
+- For each ranked finding, include:
+  1. Code locations and a concrete caller or change scenario.
+  2. The structural problem and who currently bears its knowledge or change cost.
+  3. Whether a change is worthwhile and credible improvement directions.
+  4. Changes to caller obligations and ownership (conditions, outcomes, failure
+     semantics).
+  5. Major costs and verification needs.
+- State inspection limits, important exclusions, and any missing code or
+  unreadable references; keep affected claims explicitly provisional.
+- Stop after delivering the assessment; do not proceed to target design or code
+  changes.
 
 ## References
 
-- Read [design-principles.md](references/design-principles.md) before evaluating
-  candidates for shared definitions and design constraints.
-- Read [dependencies-and-verification.md](references/dependencies-and-verification.md) for dependency substitution, seam
-  changes, or test migration.
-- Read [error-semantics.md](references/error-semantics.md) when defaults,
-  idempotency, fallback, retries, or error aggregation affect a contract.
-- Read [alternatives.md](references/alternatives.md) when credible designs differ
-  in caller obligations, state ownership, or dependency direction, or when the
-  user requests alternatives.
+Read references only under these conditions. Reading alone is not diagnosis.
+
+| Condition | Reference |
+| --- | --- |
+| Before evaluating candidate findings for shared definitions and design constraints | [design-principles.md](references/design-principles.md) |
+| Dependency substitution, seam changes, or test migration | [dependencies-and-verification.md](references/dependencies-and-verification.md) |
+| Defaults, idempotency, fallback, retries, or error aggregation affect a contract | [error-semantics.md](references/error-semantics.md) |
+| Credible designs differ in caller obligations, state ownership, or dependency direction, or alternatives are requested | [alternatives.md](references/alternatives.md) |
+
+If a required reference cannot be read, report its path and mark affected
+judgments as provisional.

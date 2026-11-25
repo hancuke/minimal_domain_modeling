@@ -40,7 +40,9 @@ minimal_domain_modeling/
     |-- implement/
     |   `-- SKILL.md
     `-- ui-design/
-        `-- SKILL.md
+        |-- SKILL.md
+        `-- references/
+            `-- layout-patterns.md
 ```
 
 Each subdirectory under `skills/` defines a skill. Skills may collaborate or share
@@ -111,7 +113,9 @@ explicitly and never claim an unperformed workflow is complete.
 
 ## Authoring Sources
 
-See [Principle-driven Skill Design](../guide.md) for the authoring approach.
+Follow the [Skill Authoring Policy](../guide.md) when creating or revising skills.
+It is the canonical policy for skill organization, examples, workflows, and
+review criteria; do not maintain a second authoring specification here.
 
 - [Anthropic Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - [mgechev/skills-best-practices](https://github.com/mgechev/skills-best-practices)
@@ -126,3 +130,4 @@ See [Principle-driven Skill Design](../guide.md) for the authoring approach.
 - https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html
 - https://mcpmarket.com/zh/tools/skills/rob-pike-code-philosophy
 - https://ubos.tech/news/rob-pikes-five-programming-rules-timeless-guidance-for-modern-developers/
+- https://github.com/markduan/a-philosophy-of-software-design-skills
