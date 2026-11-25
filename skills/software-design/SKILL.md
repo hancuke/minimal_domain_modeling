@@ -30,7 +30,10 @@ Hand off implementation only when requested and approved.
   Implement only when both are present. Seek renewed approval for material
   changes to the approved software structure, interface, or behavior.
 - Design-only requests end with the design. Assessment-only requests end with
-  findings. Neither authorizes edits.
+  findings. Neither authorizes implementation changes.
+- Default to delivering the design in the conversation. Create or update a
+  design file only when requested or required by an established project workflow.
+  A request for a design document authorizes that artifact, not implementation.
 
 ## Design principles
 
@@ -50,6 +53,45 @@ Hand off implementation only when requested and approved.
   solutions, not required deliverables. Sequential code is valid when it keeps
   the relevant rules and responsibilities clear.
 
+## Delivery modes
+
+Use the same design standards in both modes. Adapt the deliverable, not the
+quality of the reasoning or the approval gate.
+
+**In-session design (default):** Present the information needed for the current
+decision in the response. Honor requests such as "only key interfaces and the
+directory structure"; include consequential constraints, failure semantics, and
+compatibility obligations alongside the affected interfaces. Do not expand a
+bounded design into a full document or create a file by default.
+
+**Cross-session implementation document (on request):** When the user requests a
+durable design or a handoff for a new session, write or update one canonical
+document using the requested location or established project convention. For an
+implementation handoff, include enough context for an agent with the document
+and the specified repository, but no chat history, to inspect and implement:
+
+- Goal, scope, non-goals, and necessary confirmed business rules.
+- Repository and relevant code or documentation paths, integration points, and
+  runtime or tooling constraints; identify the inspected revision when useful.
+- Target directory structure, file responsibilities, public business entry
+  points, internal implementation owners, and dependency direction.
+- Key interfaces, inputs, results, usage constraints, and failure semantics.
+- Settled design decisions and the rationale needed to preserve their intent.
+- Applicable compatibility and migration obligations, acceptance scenarios,
+  and relevant verification commands with their working directories.
+- Unresolved questions, assumptions, and explicit approval status, including
+  which work remains blocked.
+
+Include only applicable material, not empty template sections or a line-by-line
+implementation script. Use durable repository references instead of copying
+source code or relying on "as discussed above." A shorter durable design is valid
+when the user is not requesting an independently actionable implementation handoff.
+Do not label an incomplete or unresolved design ready for independent implementation.
+
+Record approval only when actually given; document creation, a "ready" label,
+or receipt in another session does not itself authorize implementation.
+Keep an existing design current rather than creating duplicate handoff documents.
+
 ## Workflow
 
 ### 1. Confirm inputs and constraints
@@ -57,6 +99,7 @@ Hand off implementation only when requested and approved.
 State the main job in one sentence. Identify required scenarios, acceptance
 criteria, scope, and compatibility needs. Inspect relevant code, terminology,
 conventions, and tests. Distinguish business constraints from past implementation choices.
+Select the delivery mode from the request; use in-session delivery when unspecified.
 
 | Input | Starting path |
 | --- | --- |
@@ -105,9 +148,11 @@ Compare coherent structures before deciding local details.
 Existing code boundaries can change. A business concept does not require its own class.
 
 Own the target responsibilities, contracts, and dependency direction.
-Leave concrete file and function placement to `implement` within those decisions.
-Show a file layout only when physical placement clarifies a consequential boundary;
-do not require a complete file tree for every design.
+Show the target directory and key file layout when requested, when preparing an
+independent implementation handoff, or when physical placement clarifies a
+consequential boundary. Leave remaining file and private function placement to
+`implement` within those decisions; do not require a complete file tree for every
+in-session design.
 
 Make the owners of business operations, business rules, technical I/O, and format
 handling explicit where relevant. Show which capability hides technical sequences
@@ -152,9 +197,11 @@ Migration and verification cover important risks.
 
 ### 4. Present the design and await approval
 
-Present the target structure and interfaces with representative usage.
+Deliver the design in the selected mode and requested level of detail.
+Present the target structure and interfaces with representative usage when useful.
 Explain important differences from the current design.
-Include the migration and verification plan.
+Include applicable migration and verification needs; an independent implementation
+handoff must make these actionable without the conversation history.
 Use signatures, a diagram, or code sketches only when they clarify the decision.
 Explain significant trade-offs, including consequential design-technique choices.
 Integrate these decisions into the design; do not add a mandatory pattern report
@@ -165,30 +212,41 @@ benefit. These findings support the design. They do not claim a code change.
 State unresolved assumptions separately from approval status. For implementation
 requests, ask for approval and stop under the approval gate.
 
-**Exit:** The design is submitted for review.
+**Exit:** The design is submitted for review in the requested form.
 Submission completes the design phase. It does not authorize implementation.
 
-### 5. Hand off implementation after approval
+### 5. Hand off for implementation
 
-Proceed only after the approval gate is satisfied and key uncertainties are resolved.
-Load `implement` and hand off the approved responsibilities, interfaces, dependency
+Start implementation only after the approval gate is satisfied and key
+uncertainties are resolved. For requested same-session implementation, load
+`implement` and hand off the approved responsibilities, interfaces, dependency
 direction, state and effect ownership, failure semantics, compatibility constraints,
 and migration and verification needs. Explicitly identify public business entry
 points, internal rule owners, technical implementation owners, and where concrete
 dependencies are wired. Reuse the approved design; do not create a duplicate
 handoff document.
 
+For a future-session handoff, deliver the document under the delivery-mode
+contract and stop; do not start implementation or require a same-session skill
+invocation. A draft can be delivered before approval if its pending status and
+blockers are explicit.
+
 `implement` owns concrete file and function placement within the approved
 responsibilities and contracts, including the pre-implementation Code Placement
 Map for multi-responsibility features or mixed business and I/O changes.
+Reuse an approved layout as that map rather than requiring it to be regenerated;
+`implement` checks it against the current repository and fills only necessary gaps.
 It also owns implementation and behavior and boundary checks.
 If implementation invalidates a design assumption, revisit only the affected
 design and seek renewed approval for material changes.
 
 If `implement` is unavailable, report the missing dependency and stop before coding.
 
-**Exit:** Implementation is handed to `implement` with the approved contract.
-Completion and verification are reported under that skill's execution contract.
+**Exit:** For same-session execution, implementation is handed to `implement`
+with the approved contract. For future-session execution, the durable design is
+delivered with its actual approval status and any blockers.
+Implementation completion and verification are reported under `implement`'s
+execution contract, not claimed by delivering a design.
 
 ## References
 

@@ -45,7 +45,8 @@ but do not copy defects or force different semantics into one pattern.
 ## Workflow
 
 1. Inspect the approved design or established behavior, relevant implementations,
-   representative callers, and tests.
+   representative callers, and tests. For a cross-session design document, apply
+   the intake checks below before coding.
 2. Before implementation, establish concrete placement. For a new feature with
    multiple responsibilities, or a change involving both business decisions or
    workflows and technical I/O, present a concise Code Placement Map:
@@ -61,6 +62,8 @@ but do not copy defects or force different semantics into one pattern.
    - Keep the map in the response or existing design; no separate document is
      required. A local fix within established responsibilities can reuse sound
      placement without a new map. Return material boundary changes for approval.
+     Reuse a supplied approved layout as the map after checking it against the
+     current repository; fill necessary placement gaps rather than regenerating it.
 3. Implement the smallest coherent change within those decisions. Keep dependent
    callers consistent and preserve business invariants, failure semantics, and compatibility.
 4. Review changed code and representative callers against the placement map or
@@ -69,6 +72,29 @@ but do not copy defects or force different semantics into one pattern.
 5. Run relevant project tests, type checks, linters, and builds as applicable.
    Add focused coverage for changed behavior and important failures. Preserve
    the constraints protected by existing tests when migrating coverage.
+
+## Cross-session design intake
+
+Treat the supplied document as the design contract, not as evidence that code
+has already been implemented or verified.
+
+- Read its goal, scope, contracts, boundaries, approval status, and unresolved
+  questions. Confirm that implementation is requested and approval is established;
+  document presence or a "ready" label alone does not satisfy the approval gate.
+- Resolve referenced repository files and compare the design's assumptions,
+  integration points, and any recorded revision with the current code and tests.
+  Verify relevant tooling and commands rather than assuming old checks still apply.
+- Proceed without reconstructing the previous conversation when the document and
+  repository establish the required context. Resolve local implementation details
+  through inspection; ask only about missing decisions that materially affect the
+  approved behavior, contracts, or boundaries.
+- If repository drift or a missing decision invalidates the design, pause the
+  affected work and return the specific discrepancy to `software-design`.
+  Seek renewed approval for material changes, not for incidental file drift.
+
+Keep the canonical design current when updates are requested or required by
+project workflow. Do not create a second handoff document or treat a document's
+verification plan as proof that verification has run.
 
 ## Placement example
 
