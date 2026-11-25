@@ -33,6 +33,14 @@ Preserve design boundaries in the actual codebase. Do not collapse business beha
 4. **Explicit interfaces** — Expose only the contracts required by collaborating components.
 5. **Hide implementation details** — Keep private helpers and technical sequences inside their owning modules without hiding failures callers must handle.
 6. **Cohesion over fragmentation** — Avoid both God Files and unnecessary one-function-per-file decomposition.
+7. **Names support correct expectations** — Use established project vocabulary and conventions. Name the relevant role, outcome, or unit precisely enough for the scope; do not rename unrelated code for stylistic uniformity.
+8. **Comments add missing knowledge** — Explain non-obvious contracts, constraints, or reasons near their owner. Do not restate code or require a comment before every function.
+
+**Good:** Distinguish `timeoutMs` from an attempt count. Document a range's
+exclusive end or a retry's safety assumption when the code does not express it.
+**Avoid:** Replace established business terms with generic `data` or `manager`,
+or add comments that merely repeat method names. Match existing conventions,
+but do not copy defects or force different semantics into one pattern.
 
 ## Workflow
 

@@ -24,6 +24,26 @@ Use these terms to clarify analysis, not to require renaming.
 Depth is one evaluation axis, not a goal that overrides cohesion, independent
 change, dependency isolation, compatibility, or migration cost.
 
+## Diagnose complexity through scenarios
+
+Use three perspectives to identify costs, not as a mandatory scoring checklist:
+
+- **Change amplification:** One logical change requires coordinated edits in
+  several places. Trace which decision is repeated and who should own it.
+- **Cognitive load:** A caller must understand details unrelated to its task.
+  Identify the rules, ordering, configuration, or recovery knowledge it carries.
+- **Hidden impact:** The affected code or required knowledge is hard to discover.
+  Show a dependency or assumption that a plausible change could overlook.
+
+Support each finding with code locations and a caller or change scenario.
+Many files, a thin wrapper, or a difficult name can prompt investigation;
+none alone proves that restructuring is worthwhile.
+
+**Good:** A new provider error requires every business caller to understand its
+transport code. Identify where translation can preserve meaningful outcomes.
+**Avoid:** Merge a thin protocol adapter into business code because it does
+little computation.
+
 ## Assess the complete interface
 
 Evaluate complete caller scenarios, not just entry-point counts. A single

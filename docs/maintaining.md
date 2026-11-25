@@ -31,6 +31,7 @@ minimal_domain_modeling/
     |   `-- references/
     |       |-- design-principles.md
     |       |-- dependencies-and-verification.md
+    |       |-- error-semantics.md
     |       `-- alternatives.md
     |-- software-design/
     |   |-- SKILL.md
@@ -95,6 +96,7 @@ separate skill. Reading a reference does not start an independent review workflo
 | --- | --- |
 | [design-principles.md](../skills/code-structure-review/references/design-principles.md) | Shared terminology and architectural constraints. `code-structure-review` reads it before evaluating candidates. `software-design` reads it for module boundaries, dependency isolation, or consequential architectural choices, not simple local changes. |
 | [dependencies-and-verification.md](../skills/code-structure-review/references/dependencies-and-verification.md) | Dependency semantics, seam placement, and test migration. Read for dependency substitution, seam changes, or test migration. |
+| [error-semantics.md](../skills/code-structure-review/references/error-semantics.md) | Error contracts and recovery ownership. Read when defaults, idempotency, fallback, retries, or error aggregation affect a contract. |
 | [alternatives.md](../skills/code-structure-review/references/alternatives.md) | Compare improvement directions during review and target solutions during design. Read when alternatives are explicitly requested or differ consequentially. |
 
 Depth is one evaluation dimension, not an overriding priority over responsibility
@@ -116,6 +118,7 @@ See [Principle-driven Skill Design](../guide.md) for the authoring approach.
 
 ## Further References
 
+- [A Philosophy of Software Design skills](https://github.com/markduan/a-philosophy-of-software-design-skills), based on John Ousterhout's book: inspiration for complexity diagnosis and error-contract guidance, adapted to this project's evidence requirements and approval gates.
 - https://github.com/wonsukchoi/domain-experts/blob/main/roles/financial-analyst/
 - https://www.multicians.org/thvv/proverbs.html
 - https://www.thoughtworks.com/en-us/insights/blog/agile-project-management/domain-modeling-what-you-need-to-know-before-coding

@@ -96,6 +96,8 @@ Keep affected claims provisional.
   candidates for shared definitions and design constraints.
 - Read [dependencies-and-verification.md](references/dependencies-and-verification.md) for dependency substitution, seam
   changes, or test migration.
+- Read [error-semantics.md](references/error-semantics.md) when defaults,
+  idempotency, fallback, retries, or error aggregation affect a contract.
 - Read [alternatives.md](references/alternatives.md) when credible designs differ
   in caller obligations, state ownership, or dependency direction, or when the
   user requests alternatives.

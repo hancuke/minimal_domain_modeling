@@ -35,7 +35,7 @@ npx skills add hancuke/minimal_domain_modeling --skill software-design
 npx skills add hancuke/minimal_domain_modeling --skill implement
 ```
 
-Choose the same agent and installation scope for all three installations so the directories share one skills parent directory. Do not assume the installer resolves cross-skill dependencies automatically. After installation, check that the local state-and-transitions reference and all three cross-skill references in `software-design/SKILL.md` are readable and that the agent can find `implement`. Report missing dependencies explicitly; rules that were not loaded must not be treated as applied.
+Choose the same agent and installation scope for all three installations so the directories share one skills parent directory. Do not assume the installer resolves cross-skill dependencies automatically. After installation, check that the local state-and-transitions reference and all four cross-skill references in `software-design/SKILL.md` are readable and that the agent can find `implement`. Report missing dependencies explicitly; rules that were not loaded must not be treated as applied.
 
 `npm install skills` installs only the Skills CLI, not this repository's skills. This repository does not need to be published to npm.
 

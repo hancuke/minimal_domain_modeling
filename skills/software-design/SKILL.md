@@ -190,6 +190,7 @@ Read references only under these conditions. Reading alone is not diagnosis.
 | Operation legality depends on lifecycle state, or transition rules are scattered | [state-and-transitions.md](references/state-and-transitions.md) |
 | Module boundaries, dependency isolation, or consequential architectural choices | [design-principles.md](../code-structure-review/references/design-principles.md) |
 | Dependency substitution, seam changes, or test migration | [dependencies-and-verification.md](../code-structure-review/references/dependencies-and-verification.md) |
+| Defaults, idempotency, fallback, retries, or error aggregation affect a contract | [error-semantics.md](../code-structure-review/references/error-semantics.md) |
 | Alternatives requested, or designs differ consequentially in caller obligations, state ownership, or dependency direction | [alternatives.md](../code-structure-review/references/alternatives.md) |
 
 If a required reference cannot be read, report its path.
