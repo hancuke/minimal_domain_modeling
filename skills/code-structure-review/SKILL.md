@@ -104,8 +104,9 @@ Review concrete costs and benefits, not module size or a preferred refactoring.
     naming preference alone.
   - **Change locality:** Trace a relevant business-rule change and a provider or
     storage change to check whether each stays with its owner or crosses
-    boundaries unnecessarily. Inspect dependency direction, cycles, and existing
-    mechanical boundary checks.
+    boundaries unnecessarily—including whether frequently changing rules or
+    policies force edits to stable workflow orchestration. Inspect dependency
+    direction, cycles, and existing mechanical boundary checks.
 - *Intermediate deliverable:* Candidate findings with scenario-backed cost
   analysis and verified evidence.
 - *Stopping condition:* Every retained candidate has concrete code locations and
